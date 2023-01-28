@@ -1,13 +1,20 @@
 package dev.themeinerlp.solarsystem.api.world
 
+import dev.themeinerlp.solarsystem.api.database.PlanetEntity
+import dev.themeinerlp.solarsystem.api.utils.BANNED_WORLD_NAMES
 import org.bukkit.Difficulty
 import org.bukkit.GameMode
 import org.bukkit.World
+import org.bukkit.WorldCreator
 import org.bukkit.WorldType
+import java.lang.IllegalArgumentException
+import java.lang.NullPointerException
 
 interface Planet<T> {
 
     fun getOriginWorld(): T?
+
+    fun getEntity(): PlanetEntity
 
     fun getName(): String
 
@@ -97,7 +104,7 @@ interface Planet<T> {
 
     fun setRespawnWorld(world: Planet<T>)
 
-    fun getRespawnWorld(): Planet<T>
+    fun getRespawnWorld(): Planet<T>?
 
     fun getGameMode(): GameMode
 
@@ -105,13 +112,46 @@ interface Planet<T> {
 
     class Builder(
         var name: String? = null,
-        var difficulty: Difficulty? = null,
+        var seed: Long? = null,
         var environment: World.Environment? = null,
+        var generateStructures: Boolean = true,
+        var generator: String? = null,
+        var useSpawnAdjust: Boolean = true,
+        var worldType: WorldType = WorldType.NORMAL
     ) {
         fun name(name: String) = apply { this.name = name }
-        fun difficulty(difficulty: Difficulty) = apply { this.difficulty = difficulty }
+        fun seed(seed: Long) = apply { this.seed = seed }
         fun environment(environment: World.Environment) = apply { this.environment = environment }
+        fun generateStructures(generateStructures: Boolean) = apply { this.generateStructures = generateStructures }
+        fun worldType(worldType: WorldType) = apply { this.worldType = worldType }
+        fun generator(generator: String?) = apply { this.generator = generator }
+        fun useSpawnAdjust(spawnAdjust: Boolean) = apply { this.useSpawnAdjust = spawnAdjust }
 
+        val worldCreator: WorldCreator
+            get() {
+                if (name == null) {
+                    throw NullPointerException()
+                }
+                if (name in BANNED_WORLD_NAMES) {
+                    throw IllegalArgumentException()
+                }
+                val creator = WorldCreator.name(name!!)
+                creator.type(worldType)
+                if (environment != null) {
+                    creator.environment(environment!!)
+                }
+                if (seed != null) {
+                    creator.seed(seed!!)
+                }
+                if (generateStructures) {
+                    creator.generateStructures(generateStructures)
+                }
+                if (generator != null) {
+                    creator.generator(generator)
+                }
+
+                return creator
+            }
     }
 
 }
