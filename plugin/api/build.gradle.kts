@@ -23,6 +23,14 @@ dependencies {
     api("org.jetbrains.kotlinx:kotlinx-serialization-hocon:1.4.1")
     api("com.zaxxer:HikariCP:5.0.1")
 
+    compileOnly("com.mojang:brigadier:1.0.500")
+    implementation("cloud.commandframework:cloud-paper:1.8.0")
+    implementation("cloud.commandframework:cloud-annotations:1.8.0")
+    implementation("cloud.commandframework:cloud-minecraft-extras:1.8.0")
+    implementation("me.lucko:commodore:2.2") {
+        isTransitive = false
+    }
+
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.1")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.1")
