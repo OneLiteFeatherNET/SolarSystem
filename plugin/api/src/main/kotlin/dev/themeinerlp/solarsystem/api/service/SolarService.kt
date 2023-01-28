@@ -4,17 +4,17 @@ import dev.themeinerlp.solarsystem.api.world.Planet
 
 interface SolarService<T> {
 
-    fun createWorld(builder: Planet.Builder)
+    fun createPlanet(builder: Planet.Builder)
 
-    fun cloneWorld(world: Planet<T>, clonedWorldName: String)
+    fun clonePlanet(world: Planet<T>, clonedWorldName: String)
 
-    fun deleteWorld(world: Planet<T>): Boolean
+    fun deletePlanet(world: Planet<T>): Boolean
 
-    fun loadWorldByName(name: String): Planet<T>
+    fun loadPlanetByName(name: String): Planet<T>
 
-    fun getWorldByName(name: String): Planet<T>
+    fun getPlanetByName(name: String): Planet<T>
 
-    fun isWorldSolarWorld(name: String): Boolean
-    fun isWorldSolarWorld(world: Planet<T>): Boolean
+    fun isSolarPlanet(name: String): Boolean
+    fun isSolarPlanet(world: Planet<T>): Boolean
 
 }
