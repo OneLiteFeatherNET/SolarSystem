@@ -10,7 +10,7 @@ data class Asteroid<T>(
     val player: Player,
     val service: SolarService<T>
 ) {
-    val currentPlanet: Planet<T>
+    val currentPlanet: Planet<T>?
         get() {
             return service.getPlanetByName(player.world.name)
         }
