@@ -5,7 +5,6 @@ import dev.themeinerlp.solarsystem.api.service.SolarService
 import dev.themeinerlp.solarsystem.api.world.Planet
 import dev.themeinerlp.solarsystem.bukkit.service.BukkitSolarService
 import org.bukkit.World
-import org.bukkit.plugin.java.JavaPlugin
 
 class BukkitSolarSystem : DatabaseSolarSystem<World>() {
 
@@ -14,7 +13,6 @@ class BukkitSolarSystem : DatabaseSolarSystem<World>() {
         connect(readConfig(), logger)
         this.solarService = BukkitSolarService()
         autoLoadPlanets()
-        this.solarService.createPlanet(Planet.Builder().name("help").environment(World.Environment.NETHER))
         createCommandSystem()
         registerCommands()
     }
