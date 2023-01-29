@@ -9,13 +9,12 @@ import cloud.commandframework.meta.CommandMeta
 import cloud.commandframework.paper.PaperCommandManager
 import com.typesafe.config.ConfigFactory
 import com.zaxxer.hikari.HikariDataSource
-import dev.themeinerlp.solarsystem.api.commands.CreateCommand
-import dev.themeinerlp.solarsystem.api.commands.DeleteCommand
-import dev.themeinerlp.solarsystem.api.commands.TeleportCommand
+import dev.themeinerlp.solarsystem.api.commands.*
 import dev.themeinerlp.solarsystem.api.config.SQLConfig
 import dev.themeinerlp.solarsystem.api.database.PlanetTables
 import dev.themeinerlp.solarsystem.api.database.PlanetEntity
 import dev.themeinerlp.solarsystem.api.parser.PlanetParser
+import dev.themeinerlp.solarsystem.api.suggetions.PlantSuggestion
 import dev.themeinerlp.solarsystem.api.utils.Asteroid
 import dev.themeinerlp.solarsystem.api.utils.CONFIG_FILE_NAME
 import io.leangen.geantyref.TypeToken
@@ -80,11 +79,17 @@ abstract class DatabaseSolarSystem<T> : JavaPlugin(), SolarSystem<T> {
 
     protected fun registerCommands() {
         if (annotationParser != null) {
+            annotationParser!!.parse(PlantSuggestion())
             annotationParser!!.parse(PlanetParser())
 
             annotationParser!!.parse(TeleportCommand())
             annotationParser!!.parse(CreateCommand())
             annotationParser!!.parse(DeleteCommand())
+            annotationParser!!.parse(ImportCommand())
+            annotationParser!!.parse(UnloadCommand())
+            annotationParser!!.parse(LoadCommand())
+            annotationParser!!.parse(RemoveCommand())
+            // annotationParser!!.parse(GameRuleCommand())
         }
     }
 
