@@ -7,6 +7,7 @@ import dev.themeinerlp.solarsystem.api.world.Planet
 import dev.themeinerlp.solarsystem.bukkit.world.BukkitPlanet
 import org.bukkit.Bukkit
 import org.bukkit.World
+import org.bukkit.WorldCreator
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.lang.RuntimeException
 import kotlin.io.path.ExperimentalPathApi
@@ -26,6 +27,36 @@ class BukkitSolarService : SolarService<World> {
             }
 
         }
+    }
+
+    override fun addPlanet(name: String, environment: World.Environment, generator: String?, useSpawnAdjust: Boolean) = transaction {
+        PlanetEntity.find { PlanetTables.name eq name }.firstOrNull() ?: kotlin.run {
+            val creator = WorldCreator(name).environment(environment)
+            if (generator != null) {
+                creator.generator(generator)
+            }
+            val world = creator.createWorld() ?: return@transaction
+            PlanetEntity.new {
+                this.name = world.name
+                this.seed = world.seed
+                this.time = world.time
+                this.environment = world.environment
+                this.adjustSpawn = adjustSpawn
+                this.generator = generator
+            }
+        }
+        Unit
+
+    }
+
+    override fun removePlanet(world: Planet<World>): Boolean = transaction {
+        world.getEntity().autoLoad = false
+        unloadPlanet(world)
+    }
+
+    override fun unloadPlanet(world: Planet<World>): Boolean {
+        val world = world.getOriginWorld() ?: return false
+        return Bukkit.unloadWorld(world, true)
     }
 
     override fun loadPlanetByName(name: String): Planet<World> = transaction {
@@ -60,7 +91,13 @@ class BukkitSolarService : SolarService<World> {
         }
     }
 
-    override fun isSolarPlanet(name: String): Boolean = !PlanetEntity.find { PlanetTables.name eq name }.empty()
+    override fun isSolarPlanet(name: String): Boolean = transaction {
+        return@transaction !PlanetEntity.find { PlanetTables.name eq name }.empty()
+    }
+    override fun getPlanets(): List<Planet<World>> {
+        return PlanetEntity.all().filter { Bukkit.getWorld(it.name) != null }
+            .map { BukkitPlanet.width(Bukkit.getWorld(it.name)!!, it) }
+    }
 
     override fun isSolarPlanet(planet: Planet<World>): Boolean =
         !PlanetEntity.find { PlanetTables.name eq planet.getName() }.empty()
