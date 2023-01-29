@@ -26,6 +26,26 @@ variables:
   FF_USE_FASTZIP: "true"
   CACHE_COMPRESSION_LEVEL: "fast"
 
+.gradle-cache: &gradle-cache
+  key:
+    files:
+      - build.gradle.kts
+      - settings.gradle.kts
+      - plugin/api/build.gradle.kts
+      - plugin/bukkit/build.gradle.kts
+  paths:
+    - "$CI_PROJECT_DIR/.gradle"
+  policy: pull
+.gradle-project: &gradle-project
+  key: $CI_COMMIT_REF_SLUG
+  paths:
+    - build
+    - plugin/api/build
+    - plugin/bukkit/build
+    - example/kotlin/build
+    - example/java/build
+  policy: pull-push
+
 before_script:
   - export GRADLE_USER_HOME=$CI_PROJECT_DIR/.gradle
 
@@ -35,15 +55,10 @@ build:
   script:
     - gradle assemble
   cache:
-    key: $CI_COMMIT_REF_SLUG
-    paths:
-      - "$CI_PROJECT_DIR/.gradle"
-      - build
-      - plugin/api/build
-      - plugin/bukkit/build
-      - example/kotlin/build
-      - example/java/build
-    policy: pull-push
+    - <<: *gradle-cache
+      policy: pull-push
+    - <<: *gradle-project
+
 
 test:
   stage: test
@@ -51,15 +66,8 @@ test:
   script:
     - gradle check
   cache:
-    key: $CI_COMMIT_REF_SLUG
-    paths:
-      - "$CI_PROJECT_DIR/.gradle"
-      - build
-      - plugin/api/build
-      - plugin/bukkit/build
-      - example/kotlin/build
-      - example/java/build
-    policy: pull
+    - <<: *gradle-cache
+    - <<: *gradle-project
 
 deploy:
   stage: deploy
@@ -72,15 +80,8 @@ deploy:
     paths:
       - plugin/bukkit/build/libs/*.jar#
   cache:
-    key: $CI_COMMIT_REF_SLUG
-    paths:
-      - "$CI_PROJECT_DIR/.gradle"
-      - build
-      - plugin/api/build
-      - plugin/bukkit/build
-      - example/kotlin/build
-      - example/java/build
-    policy: pull
+    - <<: *gradle-cache
+    - <<: *gradle-project
   only:
     - main
     - master

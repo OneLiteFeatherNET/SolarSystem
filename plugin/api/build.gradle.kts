@@ -2,8 +2,6 @@ plugins {
     kotlin("jvm") version "1.8.0"
     kotlin("plugin.serialization") version "1.8.0"
     `java-library`
-    id("io.gitlab.arturbosch.detekt").version("1.22.0")
-
 }
 
 group = "dev.themeinerlp"
