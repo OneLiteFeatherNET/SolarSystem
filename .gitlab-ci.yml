@@ -1,0 +1,46 @@
+image: repo.htl-md.schule:5003/gradle:jdk17-alpine
+
+variables:
+  GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.internal.launcher.welcomeMessageEnabled=false"
+
+cache:
+  key: $CI_COMMIT_REF_SLUG
+  paths:
+    - "$CI_PROJECT_DIR/.gradle"
+    - build
+    - plugin/api/build
+    - plugin/bukkit/build
+    - example/kotlin/build
+    - example/java/build
+
+before_script:
+  - export GRADLE_USER_HOME=$CI_PROJECT_DIR/.gradle
+
+# Stages
+build:
+  stage: build
+  script:
+    - gradle assemble
+
+test:
+  stage: test
+  needs: ["build"]
+  script:
+    - gradle check
+
+deploy:
+  stage: deploy
+  needs: ["test"]
+  script:
+    - gradle :solarsystem:plugin:bukkit:shadowJar
+  artifacts:
+    expire_in: 1 week
+    name: "jar-files"
+    paths:
+      - plugin/bukkit/build/libs/*.jar
+  only:
+    - main
+    - master
+    - test
+    - develop
+    - tags
