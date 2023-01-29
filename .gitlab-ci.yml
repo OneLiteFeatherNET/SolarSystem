@@ -29,13 +29,12 @@ variables:
 .gradle-cache: &gradle-cache
   key:
     files:
-      - build.gradle.kts
-      - settings.gradle.kts
       - plugin/api/build.gradle.kts
       - plugin/bukkit/build.gradle.kts
   paths:
     - "$CI_PROJECT_DIR/.gradle"
   policy: pull
+
 .gradle-project: &gradle-project
   key: $CI_COMMIT_REF_SLUG
   paths:
