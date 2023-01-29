@@ -7,7 +7,7 @@
 - [X] Delete worlds
 - [X] Unload worlds
 - [ ] Set world spawn
-- [ ] Remove worlds
+- [X] Remove worlds
 - [ ] Clone Worlds
 - [ ] Gamerule overview
   - [ ] Change from other worlds

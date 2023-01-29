@@ -1,7 +1,7 @@
 package dev.themeinerlp.solarsystem.bukkit.service
 
-import dev.themeinerlp.solarsystem.api.database.PlanetTables
 import dev.themeinerlp.solarsystem.api.database.PlanetEntity
+import dev.themeinerlp.solarsystem.api.database.PlanetTables
 import dev.themeinerlp.solarsystem.api.service.SolarService
 import dev.themeinerlp.solarsystem.api.world.Planet
 import dev.themeinerlp.solarsystem.bukkit.world.BukkitPlanet
@@ -9,12 +9,11 @@ import org.bukkit.Bukkit
 import org.bukkit.World
 import org.bukkit.WorldCreator
 import org.jetbrains.exposed.sql.transactions.transaction
-import java.lang.RuntimeException
 import kotlin.io.path.ExperimentalPathApi
 import kotlin.io.path.Path
 import kotlin.io.path.deleteRecursively
 
-class BukkitSolarService : SolarService<World> {
+class BukkitSolarService : SolarService {
     override fun createPlanet(builder: Planet.Builder) = transaction {
         val createdWorld = builder.worldCreator.createWorld()
         if (createdWorld != null) {
@@ -49,17 +48,17 @@ class BukkitSolarService : SolarService<World> {
 
     }
 
-    override fun removePlanet(world: Planet<World>): Boolean = transaction {
+    override fun removePlanet(world: Planet): Boolean = transaction {
         world.getEntity().autoLoad = false
         unloadPlanet(world)
     }
 
-    override fun unloadPlanet(world: Planet<World>): Boolean {
+    override fun unloadPlanet(world: Planet): Boolean {
         val world = world.getOriginWorld() ?: return false
         return Bukkit.unloadWorld(world, true)
     }
 
-    override fun loadPlanetByName(name: String): Planet<World> = transaction {
+    override fun loadPlanetByName(name: String): Planet = transaction {
         val bukkitWorld = Bukkit.getWorld(name)
         val selectedPlanet = PlanetEntity.find { PlanetTables.name eq name }.firstOrNull()
         return@transaction if (selectedPlanet != null) {
@@ -78,7 +77,7 @@ class BukkitSolarService : SolarService<World> {
 
     }
 
-    override fun getPlanetByName(name: String): Planet<World> = transaction {
+    override fun getPlanetByName(name: String): Planet = transaction {
         val bukkitWorld = Bukkit.getWorld(name)
         val selectedPlanet = PlanetEntity.find { PlanetTables.name eq name }.firstOrNull()
         if (selectedPlanet != null) {
@@ -94,16 +93,21 @@ class BukkitSolarService : SolarService<World> {
     override fun isSolarPlanet(name: String): Boolean = transaction {
         return@transaction !PlanetEntity.find { PlanetTables.name eq name }.empty()
     }
-    override fun getPlanets(): List<Planet<World>> {
-        return PlanetEntity.all().filter { Bukkit.getWorld(it.name) != null }
+
+    override fun getPlanets(): List<PlanetEntity> = transaction {
+        return@transaction PlanetEntity.all().toList()
+    }
+
+    override fun getLoadedPlanets(): List<Planet> = transaction {
+        return@transaction PlanetEntity.all().filter { Bukkit.getWorld(it.name) != null }
             .map { BukkitPlanet.width(Bukkit.getWorld(it.name)!!, it) }
     }
 
-    override fun isSolarPlanet(planet: Planet<World>): Boolean =
+    override fun isSolarPlanet(planet: Planet): Boolean =
         !PlanetEntity.find { PlanetTables.name eq planet.getName() }.empty()
 
     @OptIn(ExperimentalPathApi::class)
-    override fun deletePlanet(planet: Planet<World>): Boolean = transaction {
+    override fun deletePlanet(planet: Planet): Boolean = transaction {
         planet.getOriginWorld() ?: throw RuntimeException()
         val success = Bukkit.unloadWorld(planet.getOriginWorld()!!, false)
         planet.getEntity().delete()
@@ -113,7 +117,7 @@ class BukkitSolarService : SolarService<World> {
         return@transaction success
     }
 
-    override fun clonePlanet(planet: Planet<World>, clonedPlanetName: String) {
+    override fun clonePlanet(planet: Planet, clonedPlanetName: String) {
         TODO("Not yet implemented")
     }
 }

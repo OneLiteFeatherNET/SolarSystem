@@ -5,12 +5,12 @@ import dev.themeinerlp.solarsystem.api.world.Planet
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
-data class Asteroid<T>(
+data class Asteroid(
     val commandSender: CommandSender,
     val player: Player,
-    val service: SolarService<T>
+    val service: SolarService,
 ) {
-    val currentPlanet: Planet<T>?
+    val currentPlanet: Planet?
         get() {
             return service.getPlanetByName(player.world.name)
         }

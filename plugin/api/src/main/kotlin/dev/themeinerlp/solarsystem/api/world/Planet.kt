@@ -7,12 +7,10 @@ import org.bukkit.GameMode
 import org.bukkit.World
 import org.bukkit.WorldCreator
 import org.bukkit.WorldType
-import java.lang.IllegalArgumentException
-import java.lang.NullPointerException
 
-interface Planet<T> {
+interface Planet {
 
-    fun getOriginWorld(): T?
+    fun getOriginWorld(): World?
 
     fun getEntity(): PlanetEntity
 
@@ -102,9 +100,9 @@ interface Planet<T> {
 
     fun getPlayerLimit(): Int
 
-    fun setRespawnWorld(world: Planet<T>)
+    fun setRespawnWorld(world: Planet)
 
-    fun getRespawnWorld(): Planet<T>?
+    fun getRespawnWorld(): Planet?
 
     fun getGameMode(): GameMode
 

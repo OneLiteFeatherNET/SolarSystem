@@ -2,11 +2,14 @@ package dev.themeinerlp.solarsystem.bukkit.world
 
 import dev.themeinerlp.solarsystem.api.database.PlanetEntity
 import dev.themeinerlp.solarsystem.api.world.Planet
-import org.bukkit.*
+import org.bukkit.Difficulty
+import org.bukkit.GameMode
+import org.bukkit.World
 import org.bukkit.World.Environment
+import org.bukkit.WorldType
 import org.jetbrains.exposed.sql.transactions.transaction
 
-class BukkitPlanet() : Planet<World> {
+class BukkitPlanet() : Planet {
     private lateinit var world: World
     private lateinit var plantEntity: PlanetEntity
 
@@ -155,11 +158,11 @@ class BukkitPlanet() : Planet<World> {
 
     override fun getPlayerLimit(): Int = this.plantEntity.playerLimit
 
-    override fun getRespawnWorld(): Planet<World> {
+    override fun getRespawnWorld(): Planet {
         TODO("Not yet implemented")
     }
 
-    override fun setRespawnWorld(world: Planet<World>) {
+    override fun setRespawnWorld(world: Planet) {
         TODO("Not yet implemented")
     }
 

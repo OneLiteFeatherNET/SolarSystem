@@ -27,6 +27,7 @@ dependencies {
     implementation("cloud.commandframework:cloud-paper:1.8.0")
     implementation("cloud.commandframework:cloud-annotations:1.8.0")
     implementation("cloud.commandframework:cloud-minecraft-extras:1.8.0")
+    implementation("net.kyori:adventure-text-minimessage:4.12.0")
     implementation("me.lucko:commodore:2.2") {
         isTransitive = false
     }

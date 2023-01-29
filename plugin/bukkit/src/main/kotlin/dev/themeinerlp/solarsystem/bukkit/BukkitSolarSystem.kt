@@ -2,13 +2,11 @@ package dev.themeinerlp.solarsystem.bukkit
 
 import dev.themeinerlp.solarsystem.api.plugin.DatabaseSolarSystem
 import dev.themeinerlp.solarsystem.api.service.SolarService
-import dev.themeinerlp.solarsystem.api.world.Planet
 import dev.themeinerlp.solarsystem.bukkit.service.BukkitSolarService
-import org.bukkit.World
 
-class BukkitSolarSystem : DatabaseSolarSystem<World>() {
+class BukkitSolarSystem : DatabaseSolarSystem() {
 
-    private lateinit var solarService: SolarService<World>
+    private lateinit var solarService: SolarService
     override fun onEnable() {
         connect(readConfig(), logger)
         this.solarService = BukkitSolarService()
@@ -16,7 +14,8 @@ class BukkitSolarSystem : DatabaseSolarSystem<World>() {
         createCommandSystem()
         registerCommands()
     }
-    override fun getSolarService(): SolarService<World> {
+
+    override fun getSolarService(): SolarService {
         return this.solarService
     }
 }

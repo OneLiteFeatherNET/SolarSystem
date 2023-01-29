@@ -9,40 +9,44 @@ import cloud.commandframework.meta.CommandMeta
 import cloud.commandframework.paper.PaperCommandManager
 import com.typesafe.config.ConfigFactory
 import com.zaxxer.hikari.HikariDataSource
-import dev.themeinerlp.solarsystem.api.commands.*
+import dev.themeinerlp.solarsystem.api.commands.CreateCommand
+import dev.themeinerlp.solarsystem.api.commands.DeleteCommand
+import dev.themeinerlp.solarsystem.api.commands.ImportCommand
+import dev.themeinerlp.solarsystem.api.commands.ListCommand
+import dev.themeinerlp.solarsystem.api.commands.LoadCommand
+import dev.themeinerlp.solarsystem.api.commands.RemoveCommand
+import dev.themeinerlp.solarsystem.api.commands.TeleportCommand
+import dev.themeinerlp.solarsystem.api.commands.UnloadCommand
 import dev.themeinerlp.solarsystem.api.config.SQLConfig
-import dev.themeinerlp.solarsystem.api.database.PlanetTables
 import dev.themeinerlp.solarsystem.api.database.PlanetEntity
+import dev.themeinerlp.solarsystem.api.database.PlanetTables
 import dev.themeinerlp.solarsystem.api.parser.PlanetParser
 import dev.themeinerlp.solarsystem.api.suggetions.PlantSuggestion
 import dev.themeinerlp.solarsystem.api.utils.Asteroid
 import dev.themeinerlp.solarsystem.api.utils.CONFIG_FILE_NAME
-import io.leangen.geantyref.TypeToken
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.hocon.Hocon
 import kotlinx.serialization.hocon.decodeFromConfig
-import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import org.bukkit.plugin.java.JavaPlugin
-import org.jetbrains.exposed.sql.SqlLogger
 import org.jetbrains.exposed.sql.Database
-import org.jetbrains.exposed.sql.Transaction
 import org.jetbrains.exposed.sql.DatabaseConfig
 import org.jetbrains.exposed.sql.SchemaUtils
+import org.jetbrains.exposed.sql.SqlLogger
+import org.jetbrains.exposed.sql.Transaction
 import org.jetbrains.exposed.sql.statements.StatementContext
 import org.jetbrains.exposed.sql.statements.expandArgs
 import org.jetbrains.exposed.sql.transactions.TransactionManager
 import org.jetbrains.exposed.sql.transactions.transaction
-import java.lang.IllegalArgumentException
 import java.nio.file.Files
 import java.util.function.Function
 import java.util.logging.Logger
 import kotlin.io.path.reader
 
-abstract class DatabaseSolarSystem<T> : JavaPlugin(), SolarSystem<T> {
+abstract class DatabaseSolarSystem : JavaPlugin(), SolarSystem {
 
-    private var paperCommandManager: PaperCommandManager<Asteroid<T>>? = null
-    private var annotationParser: AnnotationParser<Asteroid<T>>? = null
+    private var paperCommandManager: PaperCommandManager<Asteroid>? = null
+    private var annotationParser: AnnotationParser<Asteroid>? = null
 
     protected fun createCommandSystem() {
         paperCommandManager = PaperCommandManager(
@@ -69,10 +73,9 @@ abstract class DatabaseSolarSystem<T> : JavaPlugin(), SolarSystem<T> {
                 p.get(StandardParameters.DESCRIPTION, "No description")
             ).build()
         }
-        val type = object : TypeToken<Asteroid<T>>() {}
         annotationParser = AnnotationParser(
             paperCommandManager!!,
-            type,
+            Asteroid::class.java,
             commandMetaFunction
         )
     }
@@ -86,6 +89,7 @@ abstract class DatabaseSolarSystem<T> : JavaPlugin(), SolarSystem<T> {
             annotationParser!!.parse(CreateCommand())
             annotationParser!!.parse(DeleteCommand())
             annotationParser!!.parse(ImportCommand())
+            annotationParser!!.parse(ListCommand())
             annotationParser!!.parse(UnloadCommand())
             annotationParser!!.parse(LoadCommand())
             annotationParser!!.parse(RemoveCommand())
