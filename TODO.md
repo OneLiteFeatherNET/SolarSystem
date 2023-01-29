@@ -1,0 +1,16 @@
+# What it needs badly
+- [X] Teleport to a world 
+  - [X] Command
+  - [ ] Navigator
+- [ ] Help Command
+- [ ] Import worlds with parameters
+- [X] Delete worlds
+- [X] Unload worlds
+- [ ] Set world spawn
+- [ ] Remove worlds
+- [ ] Clone Worlds
+- [ ] Gamerule overview
+  - [ ] Change from other worlds
+- [ ] Animal Flag
+- [ ] Monster Flag
+- [ ] List Command
