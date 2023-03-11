@@ -41,17 +41,17 @@ import kotlin.io.path.reader
 import kotlin.reflect.jvm.javaType
 import kotlin.reflect.typeOf
 
-class BukkitSolar : JavaPlugin() {
+class BukkitSolar : JavaPlugin(), SolarSystem<World> {
 
     lateinit var minecraftHelp: MinecraftHelp<Asteroid<World>>
-    private lateinit var solarService: SolarService<World>
+    private lateinit var localSolarService: SolarService<World>
     private lateinit var solarSystem: SolarSystem<World>
 
     private var paperCommandManager: PaperCommandManager<Asteroid<World>>? = null
     private var annotationParser: AnnotationParser<Asteroid<World>>? = null
     override fun onEnable() {
-        this.solarService = BukkitSolarService()
-        this.solarSystem = DatabaseSolarSystem(readConfig(), logger, this.solarService)
+        this.localSolarService = BukkitSolarService()
+        this.solarSystem = DatabaseSolarSystem(readConfig(), logger, this.localSolarService)
         if (this.solarSystem is DatabaseSolarSystem) {
             (this.solarSystem as DatabaseSolarSystem<World>).connect()
             (this.solarSystem as DatabaseSolarSystem<World>).autoLoadPlanets()
@@ -146,6 +146,9 @@ class BukkitSolar : JavaPlugin() {
             annotationParser!!.parse(HelpCommand(this))
         }
     }
+
+    override val solarService: SolarService<World>
+        get() = this.localSolarService
 
 
 }
