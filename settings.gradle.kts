@@ -1,6 +1,6 @@
 
 rootProject.name = "Solarsystem"
-
+include("api")
 include("plugin:bukkit")
 findProject(":plugin:bukkit")?.name = "bukkit"
 
