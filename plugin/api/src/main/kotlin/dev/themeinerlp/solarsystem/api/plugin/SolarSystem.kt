@@ -3,7 +3,5 @@ package dev.themeinerlp.solarsystem.api.plugin
 import dev.themeinerlp.solarsystem.api.service.SolarService
 
 interface SolarSystem<T> {
-
-    fun getJavaSolarService(): SolarService<T>
-
+    val solarService: SolarService<T>
 }

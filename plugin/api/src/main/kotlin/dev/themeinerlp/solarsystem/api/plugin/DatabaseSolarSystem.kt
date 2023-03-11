@@ -4,6 +4,7 @@ import com.zaxxer.hikari.HikariDataSource
 import dev.themeinerlp.solarsystem.api.config.SQLConfig
 import dev.themeinerlp.solarsystem.api.database.PlanetEntity
 import dev.themeinerlp.solarsystem.api.database.PlanetTables
+import dev.themeinerlp.solarsystem.api.service.SolarService
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.DatabaseConfig
 import org.jetbrains.exposed.sql.SchemaUtils
@@ -15,9 +16,10 @@ import org.jetbrains.exposed.sql.transactions.TransactionManager
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.util.logging.Logger
 
-abstract class DatabaseSolarSystem<T>(
-    val config: SQLConfig,
-    val logger: Logger,
+class DatabaseSolarSystem<T>(
+    private val config: SQLConfig,
+    private val logger: Logger,
+    override val solarService: SolarService<T>,
 ) : SolarSystem<T> {
 
     fun connect() {
@@ -37,7 +39,7 @@ abstract class DatabaseSolarSystem<T>(
 
     fun autoLoadPlanets() = transaction {
         PlanetEntity.find { PlanetTables.autoLoad eq true }.forEach {
-            getJavaSolarService().loadPlanetByName(it.name)
+            solarService.loadPlanetByName(it.name)
         }
     }
 
