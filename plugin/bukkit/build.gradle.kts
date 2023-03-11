@@ -61,6 +61,8 @@ hangarPublish {
             channel.set("Unstable")
             changelog.set("Automated publish")
             apiKey.set(System.getenv("HANGAR_SECRET"))
+            owner.set("OneLiteFeather")
+            slug.set("SolarSystem")
 
             platforms {
                 register(Platforms.PAPER) {
