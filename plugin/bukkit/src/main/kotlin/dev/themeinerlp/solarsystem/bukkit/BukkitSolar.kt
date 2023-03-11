@@ -11,6 +11,7 @@ import cloud.commandframework.paper.PaperCommandManager
 import com.typesafe.config.ConfigFactory
 import dev.themeinerlp.solarsystem.api.config.SQLConfig
 import dev.themeinerlp.solarsystem.api.plugin.DatabaseSolarSystem
+import dev.themeinerlp.solarsystem.api.plugin.SolarSystem
 import dev.themeinerlp.solarsystem.api.service.SolarService
 import dev.themeinerlp.solarsystem.api.utils.Asteroid
 import dev.themeinerlp.solarsystem.api.utils.CONFIG_FILE_NAME
@@ -44,15 +45,17 @@ class BukkitSolar : JavaPlugin() {
 
     lateinit var minecraftHelp: MinecraftHelp<Asteroid<World>>
     private lateinit var solarService: SolarService<World>
-    private lateinit var solarSystem: DatabaseSolarSystem<World>
+    private lateinit var solarSystem: SolarSystem<World>
 
     private var paperCommandManager: PaperCommandManager<Asteroid<World>>? = null
     private var annotationParser: AnnotationParser<Asteroid<World>>? = null
     override fun onEnable() {
         this.solarService = BukkitSolarService()
-        this.solarSystem = BukkitSolarSystem(this.solarService, readConfig(), logger)
-        this.solarSystem.connect()
-        this.solarSystem.autoLoadPlanets()
+        this.solarSystem = DatabaseSolarSystem(readConfig(), logger, this.solarService)
+        if (this.solarSystem is DatabaseSolarSystem) {
+            (this.solarSystem as DatabaseSolarSystem<World>).connect()
+            (this.solarSystem as DatabaseSolarSystem<World>).autoLoadPlanets()
+        }
         createCommandSystem()
         registerCommands()
         createHelpSystem()
@@ -143,4 +146,6 @@ class BukkitSolar : JavaPlugin() {
             annotationParser!!.parse(HelpCommand(this))
         }
     }
+
+
 }

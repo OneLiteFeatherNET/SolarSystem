@@ -57,25 +57,26 @@ class BukkitSolarService : SolarService<World> {
         }
     }
 
-    override fun addPlanet(name: String, environment: World.Environment, generator: String?, useSpawnAdjust: Boolean) = transaction {
-        PlanetEntity.find { PlanetTables.name eq name }.firstOrNull() ?: kotlin.run {
-            val creator = WorldCreator(name).environment(environment)
-            if (generator != null) {
-                creator.generator(generator)
+    override fun addPlanet(name: String, environment: World.Environment, generator: String?, useSpawnAdjust: Boolean) =
+        transaction {
+            PlanetEntity.find { PlanetTables.name eq name }.firstOrNull() ?: kotlin.run {
+                val creator = WorldCreator(name).environment(environment)
+                if (generator != null) {
+                    creator.generator(generator)
+                }
+                val world = creator.createWorld() ?: return@transaction
+                PlanetEntity.new {
+                    this.name = world.name
+                    this.seed = world.seed
+                    this.time = world.time
+                    this.environment = world.environment
+                    this.adjustSpawn = adjustSpawn
+                    this.generator = generator
+                }
             }
-            val world = creator.createWorld() ?: return@transaction
-            PlanetEntity.new {
-                this.name = world.name
-                this.seed = world.seed
-                this.time = world.time
-                this.environment = world.environment
-                this.adjustSpawn = adjustSpawn
-                this.generator = generator
-            }
-        }
-        Unit
+            Unit
 
-    }
+        }
 
     override fun removePlanet(world: Planet<World>): Boolean = transaction {
         world.getEntity().autoLoad = false
