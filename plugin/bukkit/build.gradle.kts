@@ -1,9 +1,12 @@
+import io.papermc.hangarpublishplugin.model.Platforms
 import net.minecrell.pluginyml.bukkit.BukkitPluginDescription
+
 plugins {
     kotlin("jvm") version "1.8.0"
     id("net.minecrell.plugin-yml.bukkit") version "0.5.2"
     id("com.github.johnrengelman.shadow") version "7.1.2"
     id("xyz.jpenilla.run-paper") version "2.0.1"
+    id("io.papermc.hangar-publish-plugin") version "0.0.3"
 }
 
 group = "dev.themeinerlp"
@@ -49,4 +52,19 @@ bukkit {
     authors = listOf("TheMeinerLP")
 
     defaultPermission = net.minecrell.pluginyml.bukkit.BukkitPluginDescription.Permission.Default.OP
+}
+
+hangarPublish {
+    publications.register("SolarSystem") {
+        version.set(project.version as String)
+        channel.set("Unstable")
+        changelog.set("Automated publish")
+
+        platforms {
+            register(Platforms.PAPER) {
+                jar.set(tasks.shadowJar.flatMap { it.archiveFile })
+                platformVersions.set(listOf("1.19", "1.19.1", "1.19.2", "1.19.3"))
+            }
+        }
+    }
 }
