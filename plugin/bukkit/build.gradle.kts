@@ -10,7 +10,7 @@ plugins {
 }
 
 group = "dev.themeinerlp"
-version = "0.0.1-SNAPSHOT"
+val baseVersion = "0.0.1"
 
 repositories {
     mavenCentral()
@@ -53,12 +53,17 @@ bukkit {
 
     defaultPermission = net.minecrell.pluginyml.bukkit.BukkitPluginDescription.Permission.Default.OP
 }
-
+version = baseVersion
 hangarPublish {
     if (System.getenv().containsKey("CI")) {
         publications.register("SolarSystem") {
-            version.set(project.version as String)
-            channel.set("Unstable")
+            val finalVersion = if (System.getenv("GITHUB_REF_NAME").equals("main")) {
+                "$baseVersion-RELEASE"
+            } else {
+                baseVersion + "-SNAPSHOT+" + System.getenv("SHA_SHORT")
+            }
+            version.set(finalVersion)
+            channel.set(System.getenv("HANGAR_CHANNEL"))
             changelog.set("Automated publish")
             apiKey.set(System.getenv("HANGAR_SECRET"))
             owner.set("OneLiteFeather")

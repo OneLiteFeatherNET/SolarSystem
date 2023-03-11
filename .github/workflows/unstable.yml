@@ -2,6 +2,8 @@ name: Build for Hangar unstable
 
 on:
   push:
+    branches:
+      - develop
 
 jobs:
   build:
@@ -9,6 +11,9 @@ jobs:
     steps:
       - name: Checkout project sources
         uses: actions/checkout@v2
+      - name: Set outputs
+        id: vars
+        run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
       - uses: actions/setup-java@v3
         with:
           distribution: temurin
@@ -19,3 +24,5 @@ jobs:
         run: gradle publishSolarSystemPublicationToHangar
         env:
           HANGAR_SECRET: ${{secrets.HANGAR_KEY}}
+          HANGAR_CHANNEL: "unstable"
+          SHA_SHORT: ${{steps.vars.outputs.sha_short}}
