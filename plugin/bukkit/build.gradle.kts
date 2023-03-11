@@ -53,7 +53,17 @@ bukkit {
 
     defaultPermission = net.minecrell.pluginyml.bukkit.BukkitPluginDescription.Permission.Default.OP
 }
-version = baseVersion
+if (System.getenv().containsKey("CI")) {
+    val finalVersion = if (System.getenv("GITHUB_REF_NAME").equals("main")) {
+        "$baseVersion-RELEASE"
+    } else {
+        baseVersion + "-SNAPSHOT+" + System.getenv("SHA_SHORT")
+    }
+    version = finalVersion
+} else {
+    version = baseVersion
+}
+
 hangarPublish {
     if (System.getenv().containsKey("CI")) {
         publications.register("SolarSystem") {
