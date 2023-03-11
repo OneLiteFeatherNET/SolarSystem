@@ -2,14 +2,16 @@ package dev.themeinerlp.solarsystem.bukkit.world
 
 import dev.themeinerlp.solarsystem.api.database.PlanetEntity
 import dev.themeinerlp.solarsystem.api.world.Planet
-import org.bukkit.Difficulty
-import org.bukkit.GameMode
+import dev.themeinerlp.solarsystem.api.wrapper.player.GameMode
+import dev.themeinerlp.solarsystem.api.wrapper.world.Difficulty
+import dev.themeinerlp.solarsystem.api.wrapper.world.WorldType
+import dev.themeinerlp.solarsystem.bukkit.mapper.toBukkit
+import dev.themeinerlp.solarsystem.bukkit.mapper.toSolar
 import org.bukkit.World
 import org.bukkit.World.Environment
-import org.bukkit.WorldType
 import org.jetbrains.exposed.sql.transactions.transaction
 
-class BukkitPlanet() : Planet {
+class BukkitPlanet() : Planet<World> {
     private lateinit var world: World
     private lateinit var plantEntity: PlanetEntity
 
@@ -34,7 +36,7 @@ class BukkitPlanet() : Planet {
 
     override fun getName(): String = this.plantEntity.name
 
-    override fun getDifficulty(): Difficulty = this.plantEntity.difficulty
+    override fun getDifficulty(): Difficulty = this.plantEntity.difficulty.toSolar()
 
     override fun getEnvironment(): Environment = this.plantEntity.environment
 
@@ -42,10 +44,10 @@ class BukkitPlanet() : Planet {
         plantEntity.environment = environment
     }
 
-    override fun getWorldType(): WorldType = this.plantEntity.worldType
+    override fun getWorldType(): WorldType = this.plantEntity.worldType.toSolar()
 
     override fun setWorldType(worldType: WorldType) = transaction {
-        plantEntity.worldType = worldType
+        plantEntity.worldType = worldType.toBukkit()
     }
 
     override fun getSeed(): Long = this.plantEntity.seed
@@ -158,18 +160,18 @@ class BukkitPlanet() : Planet {
 
     override fun getPlayerLimit(): Int = this.plantEntity.playerLimit
 
-    override fun getRespawnWorld(): Planet {
+    override fun getRespawnWorld(): Planet<World> {
         TODO("Not yet implemented")
     }
 
-    override fun setRespawnWorld(world: Planet) {
+    override fun setRespawnWorld(world: Planet<World>) {
         TODO("Not yet implemented")
     }
 
-    override fun getGameMode(): GameMode = this.plantEntity.gamemode
+    override fun getGameMode(): GameMode = this.plantEntity.gamemode.toSolar()
 
     override fun setGameMode(mode: GameMode) = transaction {
-        plantEntity.gamemode = mode
+        plantEntity.gamemode = mode.toBukkit()
     }
 
     override fun getEntity(): PlanetEntity = this.plantEntity

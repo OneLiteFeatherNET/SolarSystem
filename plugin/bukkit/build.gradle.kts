@@ -17,6 +17,13 @@ repositories {
 dependencies {
     compileOnly("io.papermc.paper:paper-api:1.19.3-R0.1-SNAPSHOT")
     api(project(":plugin:api"))
+    implementation("cloud.commandframework:cloud-paper:1.8.0")
+    implementation("cloud.commandframework:cloud-annotations:1.8.0")
+    implementation("cloud.commandframework:cloud-minecraft-extras:1.8.0")
+    implementation("net.kyori:adventure-text-minimessage:4.12.0")
+    implementation("me.lucko:commodore:2.2") {
+        isTransitive = false
+    }
 
     bukkitLibrary("com.h2database:h2:2.1.214")
 
@@ -37,7 +44,7 @@ tasks {
 bukkit {
     name = "SolarSystem"
     load = BukkitPluginDescription.PluginLoadOrder.POSTWORLD
-    main = "dev.themeinerlp.solarsystem.bukkit.BukkitSolarSystem"
+    main = "dev.themeinerlp.solarsystem.bukkit.BukkitSolar"
     apiVersion = "1.13"
     authors = listOf("TheMeinerLP")
 
