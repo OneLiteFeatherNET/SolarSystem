@@ -55,15 +55,18 @@ bukkit {
 }
 
 hangarPublish {
-    publications.register("SolarSystem") {
-        version.set(project.version as String)
-        channel.set("Unstable")
-        changelog.set("Automated publish")
+    if (System.getenv().containsKey("CI")) {
+        publications.register("SolarSystem") {
+            version.set(project.version as String)
+            channel.set("Unstable")
+            changelog.set("Automated publish")
+            apiKey.set(System.getenv("HANGAR_SECRET"))
 
-        platforms {
-            register(Platforms.PAPER) {
-                jar.set(tasks.shadowJar.flatMap { it.archiveFile })
-                platformVersions.set(listOf("1.19", "1.19.1", "1.19.2", "1.19.3"))
+            platforms {
+                register(Platforms.PAPER) {
+                    jar.set(tasks.shadowJar.flatMap { it.archiveFile })
+                    platformVersions.set(listOf("1.19", "1.19.1", "1.19.2", "1.19.3"))
+                }
             }
         }
     }

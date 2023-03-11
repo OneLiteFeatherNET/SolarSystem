@@ -11,5 +11,8 @@ jobs:
         uses: actions/checkout@v2
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
+
       - name: Run build with Gradle Wrapper
         run: ./gradlew publishSolarSystemPublicationToHangar
+        env:
+          HANGAR_SECRET: ${{secrets.HANGAR_KEY}}
