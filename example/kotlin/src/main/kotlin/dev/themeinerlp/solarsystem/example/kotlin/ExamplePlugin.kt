@@ -7,8 +7,12 @@ class ExamplePlugin : JavaPlugin() {
 
     override fun onEnable() {
         if (server.pluginManager.isPluginEnabled("SolarSystem")) {
-            val solarSystemPlugin = server.pluginManager.getPlugin("SolarSystem") as SolarSystem
-
+            val solarSystemPlugin = server.pluginManager.getPlugin("SolarSystem") as SolarSystem<*>
+            val planets = solarSystemPlugin.solarService.getPlanets()
+            planets.forEach {
+                // Prints from everyworld the name
+                println(it.name)
+            }
         }
     }
 }
