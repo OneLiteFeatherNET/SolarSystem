@@ -1,4 +1,4 @@
-package dev.themeinerlp.solarsystem.api.commands
+package dev.themeinerlp.solarsystem.bukkit.commands
 
 import cloud.commandframework.annotations.Argument
 import cloud.commandframework.annotations.CommandDescription
@@ -6,15 +6,16 @@ import cloud.commandframework.annotations.CommandMethod
 import cloud.commandframework.annotations.Flag
 import dev.themeinerlp.solarsystem.api.utils.Asteroid
 import dev.themeinerlp.solarsystem.api.world.Planet
+import dev.themeinerlp.solarsystem.api.wrapper.world.WorldType
+import org.bukkit.World
 import org.bukkit.World.Environment
-import org.bukkit.WorldType
 
 class CreateCommand {
 
     @CommandMethod("planet create <name> <env>")
     @CommandDescription("")
     fun create(
-        asteroid: Asteroid,
+        asteroid: Asteroid<World>,
         @Argument("name") name: String,
         @Argument("env") env: Environment,
         @Flag("s") seed: Long?,

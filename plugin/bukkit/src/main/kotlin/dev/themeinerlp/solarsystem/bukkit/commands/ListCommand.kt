@@ -1,16 +1,17 @@
-package dev.themeinerlp.solarsystem.api.commands
+package dev.themeinerlp.solarsystem.bukkit.commands
 
 import cloud.commandframework.annotations.CommandMethod
 import dev.themeinerlp.solarsystem.api.utils.Asteroid
 import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.Bukkit
+import org.bukkit.World
 
 class ListCommand {
 
     private val miniMessage = { s: String -> MiniMessage.miniMessage().deserialize(s) }
 
     @CommandMethod("planet list")
-    fun list(asteroid: Asteroid) {
+    fun list(asteroid: Asteroid<World>) {
         val messages = asteroid.service.getPlanets().map {
             val loaded = Bukkit.getWorld(it.name) != null
             if (loaded) {
