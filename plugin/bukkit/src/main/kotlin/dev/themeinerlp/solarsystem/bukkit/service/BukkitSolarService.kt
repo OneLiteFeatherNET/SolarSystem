@@ -5,6 +5,7 @@ import dev.themeinerlp.solarsystem.api.database.PlanetTables
 import dev.themeinerlp.solarsystem.api.service.SolarService
 import dev.themeinerlp.solarsystem.api.utils.BANNED_WORLD_NAMES
 import dev.themeinerlp.solarsystem.api.world.Planet
+import dev.themeinerlp.solarsystem.api.wrapper.world.Environment
 import dev.themeinerlp.solarsystem.bukkit.extensions.getBukkitCreator
 import dev.themeinerlp.solarsystem.bukkit.extensions.toBukkit
 import dev.themeinerlp.solarsystem.bukkit.extensions.toSolar
@@ -60,10 +61,10 @@ class BukkitSolarService : SolarService<World> {
         }
     }
 
-    override fun addPlanet(name: String, environment: World.Environment, generator: String?, useSpawnAdjust: Boolean) =
+    override fun addPlanet(name: String, environment: Environment, generator: String?, useSpawnAdjust: Boolean) =
         transaction {
             PlanetEntity.find { PlanetTables.name eq name }.firstOrNull() ?: kotlin.run {
-                val creator = WorldCreator(name).environment(environment)
+                val creator = WorldCreator(name).environment(environment.toBukkit())
                 if (generator != null) {
                     creator.generator(generator)
                 }
