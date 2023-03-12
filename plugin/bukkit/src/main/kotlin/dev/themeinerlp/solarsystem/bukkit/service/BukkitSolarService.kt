@@ -93,11 +93,11 @@ class BukkitSolarService : SolarService<World> {
         val selectedPlanet = PlanetEntity.find { PlanetTables.name eq name }.firstOrNull()
         return@transaction if (selectedPlanet != null) {
             if (bukkitWorld != null) {
-                return@transaction BukkitPlanet.width(bukkitWorld, selectedPlanet)
+                return@transaction BukkitPlanet.with(bukkitWorld, selectedPlanet)
             } else {
                 val world = Bukkit.createWorld(selectedPlanet.worldCreator)
                 if (world != null) {
-                    return@transaction BukkitPlanet.width(world, selectedPlanet)
+                    return@transaction BukkitPlanet.with(world, selectedPlanet)
                 }
                 throw RuntimeException()
             }
@@ -112,7 +112,7 @@ class BukkitSolarService : SolarService<World> {
         val selectedPlanet = PlanetEntity.find { PlanetTables.name eq name }.firstOrNull()
         if (selectedPlanet != null) {
             if (bukkitWorld != null) {
-                return@transaction BukkitPlanet.width(bukkitWorld, selectedPlanet)
+                return@transaction BukkitPlanet.with(bukkitWorld, selectedPlanet)
             }
             throw RuntimeException()
         } else {
@@ -130,7 +130,7 @@ class BukkitSolarService : SolarService<World> {
 
     override fun getLoadedPlanets(): List<Planet<World>> = transaction {
         return@transaction PlanetEntity.all().filter { Bukkit.getWorld(it.name) != null }
-            .map { BukkitPlanet.width(Bukkit.getWorld(it.name)!!, it) }
+            .map { BukkitPlanet.with(Bukkit.getWorld(it.name)!!, it) }
     }
 
     override fun isSolarPlanet(planet: Planet<World>): Boolean =

@@ -24,7 +24,7 @@ class BukkitPlanet() : Planet<World> {
     }
 
     companion object {
-        fun width(
+        fun with(
             world: World,
             plantEntity: PlanetEntity,
         ) = BukkitPlanet(world, plantEntity)
