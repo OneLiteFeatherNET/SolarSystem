@@ -21,9 +21,11 @@ import dev.themeinerlp.solarsystem.bukkit.commands.HelpCommand
 import dev.themeinerlp.solarsystem.bukkit.commands.ImportCommand
 import dev.themeinerlp.solarsystem.bukkit.commands.ListCommand
 import dev.themeinerlp.solarsystem.bukkit.commands.LoadCommand
+import dev.themeinerlp.solarsystem.bukkit.commands.OptionCommand
 import dev.themeinerlp.solarsystem.bukkit.commands.RemoveCommand
 import dev.themeinerlp.solarsystem.bukkit.commands.TeleportCommand
 import dev.themeinerlp.solarsystem.bukkit.commands.UnloadCommand
+import dev.themeinerlp.solarsystem.bukkit.listener.SolarEntityListener
 import dev.themeinerlp.solarsystem.bukkit.model.BukkitAsteroid
 import dev.themeinerlp.solarsystem.bukkit.parser.PlanetParser
 import dev.themeinerlp.solarsystem.bukkit.service.BukkitSolarService
@@ -58,6 +60,7 @@ class BukkitSolar : JavaPlugin(), SolarSystem<World> {
         createCommandSystem()
         registerCommands()
         createHelpSystem()
+        server.pluginManager.registerEvents(SolarEntityListener(solarService), this)
     }
 
     override fun onDisable() {
@@ -145,6 +148,7 @@ class BukkitSolar : JavaPlugin(), SolarSystem<World> {
             annotationParser?.parse(RemoveCommand())
             annotationParser?.parse(HelpCommand(this))
             annotationParser?.parse(GameRuleCommand())
+            annotationParser?.parse(OptionCommand())
         }
     }
 
