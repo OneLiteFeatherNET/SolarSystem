@@ -14,6 +14,5 @@ class RemoveCommand {
     @CommandPermission(COMMANDS_REMOVE)
     fun remove(asteroid: BukkitAsteroid, @Argument("name", parserName = "planet") planet: Planet<World>) {
         asteroid.service.removePlanet(planet)
-
     }
 }

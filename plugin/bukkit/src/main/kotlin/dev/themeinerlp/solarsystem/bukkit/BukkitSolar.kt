@@ -16,6 +16,7 @@ import dev.themeinerlp.solarsystem.api.service.SolarService
 import dev.themeinerlp.solarsystem.api.utils.CONFIG_FILE_NAME
 import dev.themeinerlp.solarsystem.bukkit.commands.CreateCommand
 import dev.themeinerlp.solarsystem.bukkit.commands.DeleteCommand
+import dev.themeinerlp.solarsystem.bukkit.commands.GameRuleCommand
 import dev.themeinerlp.solarsystem.bukkit.commands.HelpCommand
 import dev.themeinerlp.solarsystem.bukkit.commands.ImportCommand
 import dev.themeinerlp.solarsystem.bukkit.commands.ListCommand
@@ -26,6 +27,7 @@ import dev.themeinerlp.solarsystem.bukkit.commands.UnloadCommand
 import dev.themeinerlp.solarsystem.bukkit.model.BukkitAsteroid
 import dev.themeinerlp.solarsystem.bukkit.parser.PlanetParser
 import dev.themeinerlp.solarsystem.bukkit.service.BukkitSolarService
+import dev.themeinerlp.solarsystem.bukkit.suggetions.GameRuleSuggestion
 import dev.themeinerlp.solarsystem.bukkit.suggetions.PlanetSuggestion
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.hocon.Hocon
@@ -129,18 +131,20 @@ class BukkitSolar : JavaPlugin(), SolarSystem<World> {
 
     private fun registerCommands() {
         if (annotationParser != null) {
-            annotationParser!!.parse(PlanetSuggestion())
-            annotationParser!!.parse(PlanetParser())
+            annotationParser?.parse(PlanetSuggestion())
+            annotationParser?.parse(GameRuleSuggestion())
+            annotationParser?.parse(PlanetParser())
 
-            annotationParser!!.parse(TeleportCommand())
-            annotationParser!!.parse(CreateCommand())
-            annotationParser!!.parse(DeleteCommand())
-            annotationParser!!.parse(ImportCommand())
-            annotationParser!!.parse(ListCommand())
-            annotationParser!!.parse(UnloadCommand())
-            annotationParser!!.parse(LoadCommand())
-            annotationParser!!.parse(RemoveCommand())
-            annotationParser!!.parse(HelpCommand(this))
+            annotationParser?.parse(TeleportCommand())
+            annotationParser?.parse(CreateCommand())
+            annotationParser?.parse(DeleteCommand())
+            annotationParser?.parse(ImportCommand())
+            annotationParser?.parse(ListCommand())
+            annotationParser?.parse(UnloadCommand())
+            annotationParser?.parse(LoadCommand())
+            annotationParser?.parse(RemoveCommand())
+            annotationParser?.parse(HelpCommand(this))
+            annotationParser?.parse(GameRuleCommand())
         }
     }
 

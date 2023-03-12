@@ -12,6 +12,5 @@ class LoadCommand {
     @CommandPermission(COMMANDS_LOAD)
     fun load(asteroid: BukkitAsteroid, @Argument("name") name: String) {
         asteroid.service.loadPlanetByName(name)
-
     }
 }

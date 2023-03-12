@@ -6,6 +6,7 @@ import dev.themeinerlp.solarsystem.api.service.SolarService
 import dev.themeinerlp.solarsystem.api.utils.BANNED_WORLD_NAMES
 import dev.themeinerlp.solarsystem.api.world.Planet
 import dev.themeinerlp.solarsystem.api.wrapper.world.Environment
+import dev.themeinerlp.solarsystem.api.wrapper.world.GameRule
 import dev.themeinerlp.solarsystem.bukkit.extensions.getBukkitCreator
 import dev.themeinerlp.solarsystem.bukkit.extensions.toBukkit
 import dev.themeinerlp.solarsystem.bukkit.extensions.toSolar
@@ -125,6 +126,12 @@ class BukkitSolarService : SolarService<World> {
 
     override fun isSolarPlanet(name: String): Boolean = transaction {
         return@transaction !PlanetEntity.find { PlanetTables.name eq name }.empty()
+    }
+
+    override fun changeGameRule(world: Planet<World>, rule: GameRule, value: Any) {
+        val bukkitWorld = world.getOriginWorld() ?: throw NullPointerException("Bukkit world is empty")
+        val bukkitRule = org.bukkit.GameRule.getByName(rule.vanillaName) as org.bukkit.GameRule<Any>
+        bukkitWorld.setGameRule<Any>(bukkitRule, value)
     }
 
     override fun getPlanets(): List<PlanetEntity> = transaction {

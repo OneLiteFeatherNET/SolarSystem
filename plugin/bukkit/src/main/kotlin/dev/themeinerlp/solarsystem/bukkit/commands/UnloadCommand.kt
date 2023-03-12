@@ -14,6 +14,5 @@ class UnloadCommand {
     @CommandPermission(COMMANDS_UNLOAD)
     fun unload(asteroid: BukkitAsteroid, @Argument("name", parserName = "planet") planet: Planet<World>) {
         asteroid.service.unloadPlanet(planet)
-
     }
 }
