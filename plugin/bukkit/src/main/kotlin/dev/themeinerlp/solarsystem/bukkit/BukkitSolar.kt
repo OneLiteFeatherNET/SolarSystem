@@ -26,7 +26,7 @@ import dev.themeinerlp.solarsystem.bukkit.commands.TeleportCommand
 import dev.themeinerlp.solarsystem.bukkit.commands.UnloadCommand
 import dev.themeinerlp.solarsystem.bukkit.parser.PlanetParser
 import dev.themeinerlp.solarsystem.bukkit.service.BukkitSolarService
-import dev.themeinerlp.solarsystem.bukkit.suggetions.PlantSuggestion
+import dev.themeinerlp.solarsystem.bukkit.suggetions.PlanetSuggestion
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.hocon.Hocon
 import kotlinx.serialization.hocon.decodeFromConfig
@@ -132,7 +132,7 @@ class BukkitSolar : JavaPlugin(), SolarSystem<World> {
 
     private fun registerCommands() {
         if (annotationParser != null) {
-            annotationParser!!.parse(PlantSuggestion())
+            annotationParser!!.parse(PlanetSuggestion())
             annotationParser!!.parse(PlanetParser())
 
             annotationParser!!.parse(TeleportCommand())

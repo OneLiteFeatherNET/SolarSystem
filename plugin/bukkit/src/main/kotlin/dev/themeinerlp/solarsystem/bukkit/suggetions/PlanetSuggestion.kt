@@ -9,9 +9,9 @@ import org.bukkit.World
 import org.bukkit.util.StringUtil
 import org.jetbrains.exposed.sql.transactions.transaction
 
-class PlantSuggestion {
+class PlanetSuggestion {
     @Suggestions(value = "planets")
-    fun platenSuggestions(asteroid: CommandContext<Asteroid<World>>, input: String): List<String> = transaction {
+    fun planetSuggestions(asteroid: CommandContext<Asteroid<World>>, input: String): List<String> = transaction {
         return@transaction StringUtil.copyPartialMatches(
             input,
             PlanetEntity.all().filter { Bukkit.getWorld(it.name) != null }.map { it.name },
