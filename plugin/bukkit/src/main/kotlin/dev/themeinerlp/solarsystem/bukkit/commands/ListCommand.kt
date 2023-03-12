@@ -19,7 +19,7 @@ class ListCommand {
                 miniMessage("\u22A2 <i><green><click:SUGGEST_COMMAND:/planet import ${it.name}>${it.name}</click>")
             }
         }
-        asteroid.entity.sendMessage("\u2308 Planets: ")
-        messages.forEach { asteroid.entity.sendMessage(it) }
+        asteroid.sender.sendMessage("\u2308 Planets: ")
+        messages.forEach { asteroid.sender.sendMessage(it) }
     }
 }

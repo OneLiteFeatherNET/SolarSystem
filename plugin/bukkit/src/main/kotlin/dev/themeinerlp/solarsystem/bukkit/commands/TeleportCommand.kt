@@ -6,6 +6,7 @@ import cloud.commandframework.annotations.CommandMethod
 import dev.themeinerlp.solarsystem.api.world.Planet
 import dev.themeinerlp.solarsystem.bukkit.model.BukkitAsteroid
 import org.bukkit.World
+import org.bukkit.entity.Player
 
 class TeleportCommand {
 
@@ -20,7 +21,10 @@ class TeleportCommand {
         planet: Planet<World>,
     ) {
         val world = planet.getOriginWorld() ?: return
-        asteroid.entity.teleportAsync(world.spawnLocation)
+        val sender = asteroid.sender
+        if (sender is Player) {
+            sender.teleportAsync(world.spawnLocation)
+        }
     }
 
 }

@@ -33,7 +33,6 @@ import kotlinx.serialization.hocon.decodeFromConfig
 import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.format.TextColor
 import org.bukkit.World
-import org.bukkit.entity.Player
 import org.bukkit.plugin.java.JavaPlugin
 import java.nio.file.Files
 import java.util.function.Function
@@ -88,7 +87,7 @@ class BukkitSolar : JavaPlugin(), SolarSystem<World> {
             this,
             CommandExecutionCoordinator.simpleCoordinator(),
             {
-                BukkitAsteroid(entity = it as Player, service = this.solarService, sender = it)
+                BukkitAsteroid(service = this.solarService, sender = it)
             },
             {
                 it.sender
