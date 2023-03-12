@@ -5,6 +5,8 @@ import dev.themeinerlp.solarsystem.api.database.PlanetTables
 import dev.themeinerlp.solarsystem.api.service.SolarService
 import dev.themeinerlp.solarsystem.api.utils.BANNED_WORLD_NAMES
 import dev.themeinerlp.solarsystem.api.world.Planet
+import dev.themeinerlp.solarsystem.bukkit.extensions.getBukkitCreator
+import dev.themeinerlp.solarsystem.bukkit.extensions.toSolar
 import dev.themeinerlp.solarsystem.bukkit.world.BukkitPlanet
 import org.bukkit.Bukkit
 import org.bukkit.World
@@ -49,7 +51,7 @@ class BukkitSolarService : SolarService<World> {
             if (PlanetEntity.find { PlanetTables.name eq createdWorld.name }.empty()) {
                 PlanetEntity.new {
                     name = createdWorld.name
-                    environment = createdWorld.environment
+                    environment = createdWorld.environment.toSolar()
                     seed = createdWorld.seed
                 }
             }
@@ -69,7 +71,7 @@ class BukkitSolarService : SolarService<World> {
                     this.name = world.name
                     this.seed = world.seed
                     this.time = world.time
-                    this.environment = world.environment
+                    this.environment = world.environment.toSolar()
                     this.adjustSpawn = adjustSpawn
                     this.generator = generator
                 }
@@ -95,7 +97,7 @@ class BukkitSolarService : SolarService<World> {
             if (bukkitWorld != null) {
                 return@transaction BukkitPlanet.with(bukkitWorld, selectedPlanet)
             } else {
-                val world = Bukkit.createWorld(selectedPlanet.worldCreator)
+                val world = Bukkit.createWorld(selectedPlanet.getBukkitCreator())
                 if (world != null) {
                     return@transaction BukkitPlanet.with(world, selectedPlanet)
                 }

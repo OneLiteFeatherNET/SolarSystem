@@ -5,8 +5,8 @@ import dev.themeinerlp.solarsystem.api.world.Planet
 import dev.themeinerlp.solarsystem.api.wrapper.player.GameMode
 import dev.themeinerlp.solarsystem.api.wrapper.world.Difficulty
 import dev.themeinerlp.solarsystem.api.wrapper.world.WorldType
-import dev.themeinerlp.solarsystem.bukkit.mapper.toBukkit
-import dev.themeinerlp.solarsystem.bukkit.mapper.toSolar
+import dev.themeinerlp.solarsystem.bukkit.extensions.toBukkit
+import dev.themeinerlp.solarsystem.bukkit.extensions.toSolar
 import org.bukkit.World
 import org.bukkit.World.Environment
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -36,18 +36,18 @@ class BukkitPlanet() : Planet<World> {
 
     override fun getName(): String = this.plantEntity.name
 
-    override fun getDifficulty(): Difficulty = this.plantEntity.difficulty.toSolar()
+    override fun getDifficulty(): Difficulty = this.plantEntity.difficulty
 
-    override fun getEnvironment(): Environment = this.plantEntity.environment
+    override fun getEnvironment(): Environment = this.plantEntity.environment.toBukkit()
 
     override fun setEnvironment(environment: Environment) = transaction {
-        plantEntity.environment = environment
+        plantEntity.environment = environment.toSolar()
     }
 
-    override fun getWorldType(): WorldType = this.plantEntity.worldType.toSolar()
+    override fun getWorldType(): WorldType = this.plantEntity.worldType
 
     override fun setWorldType(worldType: WorldType) = transaction {
-        plantEntity.worldType = worldType.toBukkit()
+        plantEntity.worldType = worldType
     }
 
     override fun getSeed(): Long = this.plantEntity.seed
@@ -168,10 +168,10 @@ class BukkitPlanet() : Planet<World> {
         TODO("Not yet implemented")
     }
 
-    override fun getGameMode(): GameMode = this.plantEntity.gamemode.toSolar()
+    override fun getGameMode(): GameMode = this.plantEntity.gamemode
 
     override fun setGameMode(mode: GameMode) = transaction {
-        plantEntity.gamemode = mode.toBukkit()
+        plantEntity.gamemode = mode
     }
 
     override fun getEntity(): PlanetEntity = this.plantEntity

@@ -15,14 +15,14 @@ repositories {
 val exposedVersion: String by project
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:1.19.3-R0.1-SNAPSHOT")
 
     api("org.jetbrains.exposed:exposed-core:$exposedVersion")
     api("org.jetbrains.exposed:exposed-dao:$exposedVersion")
     api("org.jetbrains.exposed:exposed-jdbc:$exposedVersion")
     api("org.jetbrains.kotlinx:kotlinx-serialization-hocon:1.4.1")
     api("com.zaxxer:HikariCP:5.0.1")
-    implementation("net.kyori:adventure-text-minimessage:4.12.0")
+    implementation("net.kyori:adventure-api:4.12.0")
+
 
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.1")

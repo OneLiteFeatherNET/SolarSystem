@@ -13,7 +13,6 @@ import dev.themeinerlp.solarsystem.api.config.SQLConfig
 import dev.themeinerlp.solarsystem.api.plugin.DatabaseSolarSystem
 import dev.themeinerlp.solarsystem.api.plugin.SolarSystem
 import dev.themeinerlp.solarsystem.api.service.SolarService
-import dev.themeinerlp.solarsystem.api.utils.Asteroid
 import dev.themeinerlp.solarsystem.api.utils.CONFIG_FILE_NAME
 import dev.themeinerlp.solarsystem.bukkit.commands.CreateCommand
 import dev.themeinerlp.solarsystem.bukkit.commands.DeleteCommand
@@ -24,6 +23,7 @@ import dev.themeinerlp.solarsystem.bukkit.commands.LoadCommand
 import dev.themeinerlp.solarsystem.bukkit.commands.RemoveCommand
 import dev.themeinerlp.solarsystem.bukkit.commands.TeleportCommand
 import dev.themeinerlp.solarsystem.bukkit.commands.UnloadCommand
+import dev.themeinerlp.solarsystem.bukkit.model.BukkitAsteroid
 import dev.themeinerlp.solarsystem.bukkit.parser.PlanetParser
 import dev.themeinerlp.solarsystem.bukkit.service.BukkitSolarService
 import dev.themeinerlp.solarsystem.bukkit.suggetions.PlanetSuggestion
@@ -38,17 +38,15 @@ import org.bukkit.plugin.java.JavaPlugin
 import java.nio.file.Files
 import java.util.function.Function
 import kotlin.io.path.reader
-import kotlin.reflect.jvm.javaType
-import kotlin.reflect.typeOf
 
 class BukkitSolar : JavaPlugin(), SolarSystem<World> {
 
-    lateinit var minecraftHelp: MinecraftHelp<Asteroid<World>>
+    lateinit var minecraftHelp: MinecraftHelp<BukkitAsteroid>
     private lateinit var localSolarService: SolarService<World>
     private lateinit var solarSystem: SolarSystem<World>
 
-    private var paperCommandManager: PaperCommandManager<Asteroid<World>>? = null
-    private var annotationParser: AnnotationParser<Asteroid<World>>? = null
+    private var paperCommandManager: PaperCommandManager<BukkitAsteroid>? = null
+    private var annotationParser: AnnotationParser<BukkitAsteroid>? = null
     override fun onEnable() {
         this.localSolarService = BukkitSolarService()
         this.solarSystem = DatabaseSolarSystem(readConfig(), logger, this.localSolarService)
@@ -70,7 +68,7 @@ class BukkitSolar : JavaPlugin(), SolarSystem<World> {
             minecraftHelp = MinecraftHelp(
                 "/planet help",
                 {
-                    it.commandSender
+                    it.sender
                 },
                 paperCommandManager!!
             )
@@ -90,10 +88,10 @@ class BukkitSolar : JavaPlugin(), SolarSystem<World> {
             this,
             CommandExecutionCoordinator.simpleCoordinator(),
             {
-                Asteroid<World>(player = it as Player, service = this.solarService, commandSender = it)
+                BukkitAsteroid(entity = it as Player, service = this.solarService, sender = it)
             },
             {
-                it.commandSender
+                it.sender
             }
         )
         if (paperCommandManager!!.hasCapability(CloudBukkitCapabilities.BRIGADIER)) {
@@ -113,7 +111,7 @@ class BukkitSolar : JavaPlugin(), SolarSystem<World> {
 
         annotationParser = AnnotationParser(
             paperCommandManager!!,
-            io.leangen.geantyref.TypeToken.get(typeOf<Asteroid<World>>().javaType) as io.leangen.geantyref.TypeToken<Asteroid<World>>,
+            BukkitAsteroid::class.java,
             commandMetaFunction
         )
     }

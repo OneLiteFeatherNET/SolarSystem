@@ -1,10 +1,9 @@
 package dev.themeinerlp.solarsystem.api.database
 
-import org.bukkit.Difficulty
-import org.bukkit.GameMode
-import org.bukkit.World.Environment
-import org.bukkit.WorldCreator
-import org.bukkit.WorldType
+import dev.themeinerlp.solarsystem.api.wrapper.player.GameMode
+import dev.themeinerlp.solarsystem.api.wrapper.world.Difficulty
+import dev.themeinerlp.solarsystem.api.wrapper.world.Environment
+import dev.themeinerlp.solarsystem.api.wrapper.world.WorldType
 import org.jetbrains.exposed.dao.IntEntity
 import org.jetbrains.exposed.dao.IntEntityClass
 import org.jetbrains.exposed.dao.id.EntityID
@@ -58,9 +57,4 @@ class PlanetEntity(id: EntityID<Int>) : IntEntity(id) {
     var playerLimit by PlanetTables.playerLimit
     val respawnPlanet by PlanetEntity optionalReferrersOn PlanetTables.respawnPlanet
     var gamemode by PlanetTables.gamemode
-
-    val worldCreator: WorldCreator
-        get() {
-            return WorldCreator.name(name).generator(generator).environment(environment).seed(seed).type(worldType)
-        }
 }
