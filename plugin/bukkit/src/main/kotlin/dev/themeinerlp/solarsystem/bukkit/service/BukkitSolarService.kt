@@ -6,6 +6,7 @@ import dev.themeinerlp.solarsystem.api.service.SolarService
 import dev.themeinerlp.solarsystem.api.utils.BANNED_WORLD_NAMES
 import dev.themeinerlp.solarsystem.api.world.Planet
 import dev.themeinerlp.solarsystem.bukkit.extensions.getBukkitCreator
+import dev.themeinerlp.solarsystem.bukkit.extensions.toBukkit
 import dev.themeinerlp.solarsystem.bukkit.extensions.toSolar
 import dev.themeinerlp.solarsystem.bukkit.world.BukkitPlanet
 import org.bukkit.Bukkit
@@ -30,7 +31,7 @@ class BukkitSolarService : SolarService<World> {
 
         WorldType.getByName(worldType.bukkitValue)?.let { creator.type(it) }
         if (environment != null) {
-            creator.environment(environment!!)
+            creator.environment(environment!!.toBukkit())
         }
         if (seed != null) {
             creator.seed(seed!!)

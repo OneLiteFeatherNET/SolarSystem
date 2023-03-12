@@ -2,7 +2,7 @@ package dev.themeinerlp.solarsystem.api.service
 
 import dev.themeinerlp.solarsystem.api.database.PlanetEntity
 import dev.themeinerlp.solarsystem.api.world.Planet
-import org.bukkit.World.Environment
+import dev.themeinerlp.solarsystem.api.wrapper.world.Environment
 
 interface SolarService<T> {
 

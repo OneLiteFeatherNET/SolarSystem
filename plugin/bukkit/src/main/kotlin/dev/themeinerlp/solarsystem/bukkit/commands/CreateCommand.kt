@@ -6,10 +6,10 @@ import cloud.commandframework.annotations.CommandMethod
 import cloud.commandframework.annotations.CommandPermission
 import cloud.commandframework.annotations.Flag
 import dev.themeinerlp.solarsystem.api.world.Planet
+import dev.themeinerlp.solarsystem.api.wrapper.world.Environment
 import dev.themeinerlp.solarsystem.api.wrapper.world.WorldType
 import dev.themeinerlp.solarsystem.bukkit.model.BukkitAsteroid
 import dev.themeinerlp.solarsystem.bukkit.utils.COMMANDS_CREATE
-import org.bukkit.World.Environment
 
 class CreateCommand {
 

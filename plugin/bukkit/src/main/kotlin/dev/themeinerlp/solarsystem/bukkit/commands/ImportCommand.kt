@@ -4,9 +4,9 @@ import cloud.commandframework.annotations.Argument
 import cloud.commandframework.annotations.CommandMethod
 import cloud.commandframework.annotations.CommandPermission
 import cloud.commandframework.annotations.Flag
+import dev.themeinerlp.solarsystem.api.wrapper.world.Environment
 import dev.themeinerlp.solarsystem.bukkit.model.BukkitAsteroid
 import dev.themeinerlp.solarsystem.bukkit.utils.COMMANDS_IMPORT
-import org.bukkit.World.Environment
 
 class ImportCommand {
 

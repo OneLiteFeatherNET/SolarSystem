@@ -4,11 +4,9 @@ import dev.themeinerlp.solarsystem.api.database.PlanetEntity
 import dev.themeinerlp.solarsystem.api.world.Planet
 import dev.themeinerlp.solarsystem.api.wrapper.player.GameMode
 import dev.themeinerlp.solarsystem.api.wrapper.world.Difficulty
+import dev.themeinerlp.solarsystem.api.wrapper.world.Environment
 import dev.themeinerlp.solarsystem.api.wrapper.world.WorldType
-import dev.themeinerlp.solarsystem.bukkit.extensions.toBukkit
-import dev.themeinerlp.solarsystem.bukkit.extensions.toSolar
 import org.bukkit.World
-import org.bukkit.World.Environment
 import org.jetbrains.exposed.sql.transactions.transaction
 
 class BukkitPlanet() : Planet<World> {
@@ -38,10 +36,10 @@ class BukkitPlanet() : Planet<World> {
 
     override fun getDifficulty(): Difficulty = this.plantEntity.difficulty
 
-    override fun getEnvironment(): Environment = this.plantEntity.environment.toBukkit()
+    override fun getEnvironment(): Environment = this.plantEntity.environment
 
     override fun setEnvironment(environment: Environment) = transaction {
-        plantEntity.environment = environment.toSolar()
+        plantEntity.environment = environment
     }
 
     override fun getWorldType(): WorldType = this.plantEntity.worldType
