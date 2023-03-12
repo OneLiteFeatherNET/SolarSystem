@@ -1,4 +1,5 @@
 # What it needs badly
+
 - [X] Teleport to a world
   - [X] Command
   - [ ] Navigator
@@ -11,6 +12,6 @@
 - [ ] Clone Worlds
 - [X] Gamerule overview
   - [X] Change from other worlds
-- [ ] Animal Flag
-- [ ] Monster Flag
+- [X] Animal Flag ( Works but not for new chunks)
+- [X] Monster Flag ( Works but not for new chunks)
 - [X] List Command

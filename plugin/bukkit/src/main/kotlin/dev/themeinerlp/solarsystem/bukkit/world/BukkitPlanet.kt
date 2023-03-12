@@ -92,6 +92,14 @@ class BukkitPlanet() : Planet<World> {
         plantEntity.monsterSpawning = enableMonsterSpawning
     }
 
+    override fun isAnimalsSpawningEnabled(): Boolean {
+        return plantEntity.animalsSpawning
+    }
+
+    override fun setAnimalsSpawningEnabled(enableAnimalsSpawning: Boolean) = transaction {
+        plantEntity.animalsSpawning = true
+    }
+
     override fun isPvPEnabled(): Boolean = this.plantEntity.pvp
 
     override fun setPvPEnabled(enablePvP: Boolean) = transaction {

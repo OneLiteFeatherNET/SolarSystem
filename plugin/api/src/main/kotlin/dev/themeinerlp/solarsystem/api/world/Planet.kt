@@ -54,6 +54,10 @@ interface Planet<T> {
 
     fun setMonsterSpawningEnabled(enableMonsterSpawning: Boolean)
 
+    fun isAnimalsSpawningEnabled(): Boolean
+
+    fun setAnimalsSpawningEnabled(enableAnimalsSpawning: Boolean)
+
     fun isPvPEnabled(): Boolean
 
     fun setPvPEnabled(enablePvP: Boolean)

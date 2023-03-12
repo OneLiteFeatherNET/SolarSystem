@@ -5,6 +5,7 @@ import dev.themeinerlp.solarsystem.api.database.PlanetTables
 import dev.themeinerlp.solarsystem.api.service.SolarService
 import dev.themeinerlp.solarsystem.api.utils.BANNED_WORLD_NAMES
 import dev.themeinerlp.solarsystem.api.world.Planet
+import dev.themeinerlp.solarsystem.api.world.PlanetOption
 import dev.themeinerlp.solarsystem.api.wrapper.world.Environment
 import dev.themeinerlp.solarsystem.api.wrapper.world.GameRule
 import dev.themeinerlp.solarsystem.bukkit.extensions.getBukkitCreator
@@ -83,13 +84,13 @@ class BukkitSolarService : SolarService<World> {
 
         }
 
-    override fun removePlanet(world: Planet<World>): Boolean = transaction {
-        world.getEntity().autoLoad = false
-        unloadPlanet(world)
+    override fun removePlanet(planet: Planet<World>): Boolean = transaction {
+        planet.getEntity().autoLoad = false
+        unloadPlanet(planet)
     }
 
-    override fun unloadPlanet(world: Planet<World>): Boolean {
-        val originWorld = world.getOriginWorld() ?: return false
+    override fun unloadPlanet(planet: Planet<World>): Boolean {
+        val originWorld = planet.getOriginWorld() ?: return false
         return Bukkit.unloadWorld(originWorld, true)
     }
 
@@ -128,8 +129,16 @@ class BukkitSolarService : SolarService<World> {
         return@transaction !PlanetEntity.find { PlanetTables.name eq name }.empty()
     }
 
-    override fun changeGameRule(world: Planet<World>, rule: GameRule, value: Any) {
-        val bukkitWorld = world.getOriginWorld() ?: throw NullPointerException("Bukkit world is empty")
+    override fun updateOption(planet: Planet<World>, option: PlanetOption, value: Boolean) {
+        when (option) {
+            PlanetOption.Monster -> planet.setMonsterSpawningEnabled(value)
+            PlanetOption.Animal -> planet.setAnimalsSpawningEnabled(value)
+            else -> {}
+        }
+    }
+
+    override fun changeGameRule(planet: Planet<World>, rule: GameRule, value: Any) {
+        val bukkitWorld = planet.getOriginWorld() ?: throw NullPointerException("Bukkit world is empty")
         val bukkitRule = org.bukkit.GameRule.getByName(rule.vanillaName) as org.bukkit.GameRule<Any>
         bukkitWorld.setGameRule<Any>(bukkitRule, value)
     }

@@ -18,6 +18,7 @@ object PlanetTables : IntIdTable() {
     val generator = text("generator").nullable().index()
     val alias = text("alias").nullable().index()
     val monsterSpawning = bool("monsterSpawning").default(true)
+    val animalsSpawning = bool("animalsSpawning").default(true)
     val pvp = bool("pvp").default(true)
     val hidden = bool("hidden").default(false)
     val weather = bool("weather").default(true)
@@ -44,6 +45,7 @@ class PlanetEntity(id: EntityID<Int>) : IntEntity(id) {
     var generator by PlanetTables.generator
     var alias by PlanetTables.alias
     var monsterSpawning by PlanetTables.monsterSpawning
+    var animalsSpawning by PlanetTables.animalsSpawning
     var pvp by PlanetTables.pvp
     var hidden by PlanetTables.hidden
     var weather by PlanetTables.weather
