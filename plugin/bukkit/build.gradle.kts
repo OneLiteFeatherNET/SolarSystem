@@ -102,8 +102,8 @@ if (System.getenv().containsKey("CI")) {
         versionType.set(System.getenv("MODRINTH_CHANNEL"))
         uploadFile.set(tasks.shadowJar as Any)
         gameVersions.addAll(listOf("1.19", "1.19.1", "1.19.2", "1.19.3"))
-        loaders.add("Paper")
-        loaders.add("Bukkit")
+        loaders.add("paper")
+        loaders.add("bukkit")
         changelog.set("Automated publish")
         dependencies { // A special DSL for creating dependencies
         }
