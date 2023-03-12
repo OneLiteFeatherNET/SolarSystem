@@ -13,4 +13,4 @@
   - [X] Change from other worlds
 - [ ] Animal Flag
 - [ ] Monster Flag
-- [ ] List Command
+- [X] List Command

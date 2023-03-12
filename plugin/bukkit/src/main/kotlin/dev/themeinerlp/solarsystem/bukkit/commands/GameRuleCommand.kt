@@ -7,13 +7,13 @@ import cloud.commandframework.annotations.CommandPermission
 import dev.themeinerlp.solarsystem.api.world.Planet
 import dev.themeinerlp.solarsystem.api.wrapper.world.GameRule
 import dev.themeinerlp.solarsystem.bukkit.model.BukkitAsteroid
-import dev.themeinerlp.solarsystem.bukkit.utils.COMMANDS_DELETE
+import dev.themeinerlp.solarsystem.bukkit.utils.COMMANDS_GAMERULE
 import org.bukkit.World
 
 class GameRuleCommand {
     @CommandMethod("planet gamerule <name> <gamerule> <value>")
     @CommandDescription("Change gamerule of a world")
-    @CommandPermission(COMMANDS_DELETE)
+    @CommandPermission(COMMANDS_GAMERULE)
     fun gameRule(
         asteroid: BukkitAsteroid,
         @Argument(
