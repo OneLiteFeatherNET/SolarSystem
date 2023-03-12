@@ -84,14 +84,14 @@ class BukkitSolarService : SolarService<World> {
     }
 
     override fun unloadPlanet(world: Planet<World>): Boolean {
-        val world = world.getOriginWorld() ?: return false
-        return Bukkit.unloadWorld(world, true)
+        val originWorld = world.getOriginWorld() ?: return false
+        return Bukkit.unloadWorld(originWorld, true)
     }
 
     override fun loadPlanetByName(name: String): Planet<World> = transaction {
         val bukkitWorld = Bukkit.getWorld(name)
         val selectedPlanet = PlanetEntity.find { PlanetTables.name eq name }.firstOrNull()
-        return@transaction if (selectedPlanet != null) {
+        if (selectedPlanet != null) {
             if (bukkitWorld != null) {
                 return@transaction BukkitPlanet.with(bukkitWorld, selectedPlanet)
             } else {
@@ -99,12 +99,11 @@ class BukkitSolarService : SolarService<World> {
                 if (world != null) {
                     return@transaction BukkitPlanet.with(world, selectedPlanet)
                 }
-                throw RuntimeException()
+                throw NullPointerException("Bukkit world is null")
             }
         } else {
-            throw RuntimeException()
+            throw NullPointerException("Selected planet is null")
         }
-
     }
 
     override fun getPlanetByName(name: String): Planet<World> = transaction {
@@ -114,9 +113,9 @@ class BukkitSolarService : SolarService<World> {
             if (bukkitWorld != null) {
                 return@transaction BukkitPlanet.with(bukkitWorld, selectedPlanet)
             }
-            throw RuntimeException()
+            throw NullPointerException("Bukkit world is null")
         } else {
-            throw RuntimeException()
+            throw NullPointerException("Selected planet is null")
         }
     }
 
@@ -138,7 +137,7 @@ class BukkitSolarService : SolarService<World> {
 
     @OptIn(ExperimentalPathApi::class)
     override fun deletePlanet(planet: Planet<World>): Boolean = transaction {
-        planet.getOriginWorld() ?: throw RuntimeException()
+        planet.getOriginWorld() ?: throw NullPointerException("World is null")
         val success = Bukkit.unloadWorld(planet.getOriginWorld()!!, false)
         planet.getEntity().delete()
         if (success) {
