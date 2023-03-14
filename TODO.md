@@ -4,7 +4,7 @@
   - [X] Command
   - [ ] Navigator
 - [X] Help Command
-- [ ] Import worlds with parameters
+- [X] Import worlds with parameters
 - [X] Delete worlds
 - [X] Unload worlds
 - [ ] Set world spawn
