@@ -11,14 +11,14 @@ body:
 
   - type: textarea
     attributes:
-      label: Observed/Actual behavior
+      label: Actual behavior
       description: What you actually saw.
     validations:
       required: true
 
   - type: textarea
     attributes:
-      label: Steps/models to reproduce
+      label: Steps to reproduce
       description: This may include a build schematic, a video, or detailed instructions to help reconstruct the issue.
     validations:
       required: true
@@ -44,10 +44,10 @@ body:
 
         ```
         > version
-        [20:34:42 INFO]: This server is running Paper version git-Paper-540 (MC: 1.16.5) (Implementing API version 1.16.5-R0.1-SNAPSHOT)
-        [20:34:42 INFO]: Checking version, please wait...
-        [20:34:42 INFO]: Previous version: git-Paper-538 (MC: 1.16.5)
-        [20:34:42 INFO]: You are running the latest version
+        [09:08:42 INFO]: Checking version, please wait...
+        [09:08:42 INFO]: This server is running Paper version git-Paper-448 (MC: 1.19.3) (Implementing API version 1.19.3-R0.1-SNAPSHOT) (Git: 155aa36)
+        You are running the latest version
+        Previous version: git-Paper-446 (MC: 1.19.3)
         ```
 
         </details>
@@ -65,9 +65,8 @@ body:
 
         ```
         > about SolarSystem
-        [01:57:14] [Server thread/INFO]: [SpigotLibraryLoader] [SolarSystem] Loading 1 libraries... please wait
-        ...
-        [01:57:14] [Server thread/INFO]: [SolarSystem] Loading server plugin SolarSystem v0.0.1
+        [09:09:23 INFO]: SolarSystem version 0.0.1
+        [09:09:23 INFO]: Author: TheMeinerLP
         ```
 
         </details>
