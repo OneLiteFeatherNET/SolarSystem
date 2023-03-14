@@ -3,8 +3,8 @@ package dev.themeinerlp.solarsystem.api.world
 import dev.themeinerlp.solarsystem.api.database.PlanetEntity
 import dev.themeinerlp.solarsystem.api.wrapper.player.GameMode
 import dev.themeinerlp.solarsystem.api.wrapper.world.Difficulty
+import dev.themeinerlp.solarsystem.api.wrapper.world.Environment
 import dev.themeinerlp.solarsystem.api.wrapper.world.WorldType
-import org.bukkit.World
 
 interface Planet<T> {
 
@@ -16,9 +16,9 @@ interface Planet<T> {
 
     fun getDifficulty(): Difficulty
 
-    fun getEnvironment(): World.Environment
+    fun getEnvironment(): Environment
 
-    fun setEnvironment(environment: World.Environment)
+    fun setEnvironment(environment: Environment)
 
     fun getWorldType(): WorldType
 
@@ -53,6 +53,10 @@ interface Planet<T> {
     fun isMonsterSpawningEnabled(): Boolean
 
     fun setMonsterSpawningEnabled(enableMonsterSpawning: Boolean)
+
+    fun isAnimalsSpawningEnabled(): Boolean
+
+    fun setAnimalsSpawningEnabled(enableAnimalsSpawning: Boolean)
 
     fun isPvPEnabled(): Boolean
 
@@ -109,7 +113,7 @@ interface Planet<T> {
     class Builder(
         var name: String? = null,
         var seed: Long? = null,
-        var environment: World.Environment? = null,
+        var environment: Environment? = null,
         var generateStructures: Boolean = true,
         var generator: String? = null,
         var useSpawnAdjust: Boolean = true,
@@ -117,7 +121,7 @@ interface Planet<T> {
     ) {
         fun name(name: String) = apply { this.name = name }
         fun seed(seed: Long) = apply { this.seed = seed }
-        fun environment(environment: World.Environment) = apply { this.environment = environment }
+        fun environment(environment: Environment) = apply { this.environment = environment }
         fun generateStructures(generateStructures: Boolean) = apply { this.generateStructures = generateStructures }
         fun worldType(worldType: WorldType) = apply { this.worldType = worldType }
         fun generator(generator: String?) = apply { this.generator = generator }

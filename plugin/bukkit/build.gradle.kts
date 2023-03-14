@@ -7,6 +7,7 @@ plugins {
     id("com.github.johnrengelman.shadow") version "7.1.2"
     id("xyz.jpenilla.run-paper") version "2.0.1"
     id("io.papermc.hangar-publish-plugin") version "0.0.3"
+    id("com.modrinth.minotaur") version "2.+"
 }
 
 group = "dev.themeinerlp"
@@ -53,7 +54,17 @@ bukkit {
 
     defaultPermission = net.minecrell.pluginyml.bukkit.BukkitPluginDescription.Permission.Default.OP
 }
-version = baseVersion
+if (System.getenv().containsKey("CI")) {
+    val finalVersion = if (System.getenv("GITHUB_REF_NAME").equals("main")) {
+        "$baseVersion-RELEASE"
+    } else {
+        baseVersion + "-SNAPSHOT+" + System.getenv("SHA_SHORT")
+    }
+    version = finalVersion
+} else {
+    version = baseVersion
+}
+
 hangarPublish {
     if (System.getenv().containsKey("CI")) {
         publications.register("SolarSystem") {
@@ -75,6 +86,26 @@ hangarPublish {
                     platformVersions.set(listOf("1.19", "1.19.1", "1.19.2", "1.19.3"))
                 }
             }
+        }
+    }
+}
+if (System.getenv().containsKey("CI")) {
+    modrinth {
+        token.set(System.getenv("MODRINTH_TOKEN"))
+        projectId.set("O2HC6NZY")
+        val finalVersion = if (System.getenv("GITHUB_REF_NAME").equals("main")) {
+            "$baseVersion-RELEASE"
+        } else {
+            baseVersion + "-SNAPSHOT+" + System.getenv("SHA_SHORT")
+        }
+        versionNumber.set(finalVersion)
+        versionType.set(System.getenv("MODRINTH_CHANNEL"))
+        uploadFile.set(tasks.shadowJar as Any)
+        gameVersions.addAll(listOf("1.19", "1.19.1", "1.19.2", "1.19.3"))
+        loaders.add("paper")
+        loaders.add("bukkit")
+        changelog.set("Automated publish")
+        dependencies { // A special DSL for creating dependencies
         }
     }
 }

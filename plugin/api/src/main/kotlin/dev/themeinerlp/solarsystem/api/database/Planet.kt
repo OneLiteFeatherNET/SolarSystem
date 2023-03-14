@@ -1,10 +1,9 @@
 package dev.themeinerlp.solarsystem.api.database
 
-import org.bukkit.Difficulty
-import org.bukkit.GameMode
-import org.bukkit.World.Environment
-import org.bukkit.WorldCreator
-import org.bukkit.WorldType
+import dev.themeinerlp.solarsystem.api.wrapper.player.GameMode
+import dev.themeinerlp.solarsystem.api.wrapper.world.Difficulty
+import dev.themeinerlp.solarsystem.api.wrapper.world.Environment
+import dev.themeinerlp.solarsystem.api.wrapper.world.WorldType
 import org.jetbrains.exposed.dao.IntEntity
 import org.jetbrains.exposed.dao.IntEntityClass
 import org.jetbrains.exposed.dao.id.EntityID
@@ -19,6 +18,7 @@ object PlanetTables : IntIdTable() {
     val generator = text("generator").nullable().index()
     val alias = text("alias").nullable().index()
     val monsterSpawning = bool("monsterSpawning").default(true)
+    val animalsSpawning = bool("animalsSpawning").default(true)
     val pvp = bool("pvp").default(true)
     val hidden = bool("hidden").default(false)
     val weather = bool("weather").default(true)
@@ -45,6 +45,7 @@ class PlanetEntity(id: EntityID<Int>) : IntEntity(id) {
     var generator by PlanetTables.generator
     var alias by PlanetTables.alias
     var monsterSpawning by PlanetTables.monsterSpawning
+    var animalsSpawning by PlanetTables.animalsSpawning
     var pvp by PlanetTables.pvp
     var hidden by PlanetTables.hidden
     var weather by PlanetTables.weather
@@ -58,9 +59,4 @@ class PlanetEntity(id: EntityID<Int>) : IntEntity(id) {
     var playerLimit by PlanetTables.playerLimit
     val respawnPlanet by PlanetEntity optionalReferrersOn PlanetTables.respawnPlanet
     var gamemode by PlanetTables.gamemode
-
-    val worldCreator: WorldCreator
-        get() {
-            return WorldCreator.name(name).generator(generator).environment(environment).seed(seed).type(worldType)
-        }
 }
