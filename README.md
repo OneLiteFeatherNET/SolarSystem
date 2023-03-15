@@ -10,3 +10,11 @@ SolarSystem should not only be another world manager, we want to make this plugi
 
 ## Focus
 Our focus lies within a basic implementation of SolarSystem, its core and reaching the goal of stable builds to use it in production later on.
+
+
+## More information / external links
+Hangar: https://hangar.papermc.io/OneLiteFeather/SolarSystem
+
+Modrinth: https://modrinth.com/plugin/solarsystem
+
+Discord: https://discord.gg/2HVQKTwH
