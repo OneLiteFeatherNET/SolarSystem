@@ -1,4 +1,4 @@
-name: Build for Hangar unstable
+name: Build for Hangar Snapshot
 
 on:
   push:
@@ -21,14 +21,14 @@ jobs:
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
       - name: Publish to hangar
-        run: gradle publishSolarSystemPublicationToHangar
+        run: gradle publishAllPublicationsToHangar
         env:
           HANGAR_SECRET: ${{secrets.HANGAR_KEY}}
-          HANGAR_CHANNEL: "Unstable"
+          HANGAR_CHANNEL: "Snapshot"
           SHA_SHORT: ${{steps.vars.outputs.sha_short}}
       - name: Publish to modrinth
         run: gradle modrinth
         env:
           MODRINTH_TOKEN: ${{secrets.MODRITH_KEY}}
-          MODRINTH_CHANNEL: "alpha"
+          MODRINTH_CHANNEL: "beta"
           SHA_SHORT: ${{steps.vars.outputs.sha_short}}
