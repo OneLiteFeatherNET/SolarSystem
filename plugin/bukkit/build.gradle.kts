@@ -8,6 +8,8 @@ plugins {
     id("xyz.jpenilla.run-paper") version "2.0.1"
     id("io.papermc.hangar-publish-plugin") version "0.0.3"
     id("com.modrinth.minotaur") version "2.+"
+
+    id("org.jetbrains.changelog") version "2.0.0"
 }
 
 group = "dev.themeinerlp"
@@ -35,13 +37,12 @@ dependencies {
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.1")
 }
 
-tasks.getByName<Test>("test") {
-    useJUnitPlatform()
-}
-
 tasks {
     runServer {
         minecraftVersion("1.19.3")
+    }
+    shadowJar {
+        archiveFileName.set("${rootProject.name}.${archiveExtension.getOrElse("jar")}")
     }
 }
 
@@ -54,28 +55,44 @@ bukkit {
 
     defaultPermission = net.minecrell.pluginyml.bukkit.BukkitPluginDescription.Permission.Default.OP
 }
-if (System.getenv().containsKey("CI")) {
-    val finalVersion = if (System.getenv("GITHUB_REF_NAME").equals("main")) {
-        "$baseVersion-RELEASE"
-    } else {
-        baseVersion + "-SNAPSHOT+" + System.getenv("SHA_SHORT")
-    }
-    version = finalVersion
+
+version = if (System.getenv().containsKey("CI")) {
+    val finalVersion =
+        if (System.getenv("GITHUB_REF_NAME") in listOf("main", "master") || System.getenv("GITHUB_REF_NAME")
+                .startsWith("v")
+        ) {
+            baseVersion
+        } else {
+            baseVersion + "-SNAPSHOT+" + System.getenv("SHA_SHORT")
+        }
+    finalVersion
 } else {
-    version = baseVersion
+    baseVersion
+}
+
+changelog {
+    version.set(baseVersion)
+    path.set("${project.projectDir}/CHANGELOG.md")
+    itemPrefix.set("-")
+    keepUnreleasedSection.set(true)
+    unreleasedTerm.set("[Unreleased]")
+    groups.set(listOf("Added", "Changed", "Deprecated", "Removed", "Fixed", "Security"))
 }
 
 hangarPublish {
     if (System.getenv().containsKey("CI")) {
         publications.register("SolarSystem") {
-            val finalVersion = if (System.getenv("GITHUB_REF_NAME").equals("main")) {
-                "$baseVersion-RELEASE"
-            } else {
-                baseVersion + "-SNAPSHOT+" + System.getenv("SHA_SHORT")
-            }
+            val finalVersion =
+                if (System.getenv("GITHUB_REF_NAME") in listOf("main", "master") || System.getenv("GITHUB_REF_NAME")
+                        .startsWith("v")
+                ) {
+                    "$baseVersion-RELEASE"
+                } else {
+                    baseVersion + "-SNAPSHOT+" + System.getenv("SHA_SHORT")
+                }
             version.set(finalVersion)
             channel.set(System.getenv("HANGAR_CHANNEL"))
-            changelog.set("Automated publish")
+            changelog.set(project.changelog.renderItem(project.changelog.get(baseVersion)))
             apiKey.set(System.getenv("HANGAR_SECRET"))
             owner.set("OneLiteFeather")
             slug.set("SolarSystem")
@@ -93,18 +110,21 @@ if (System.getenv().containsKey("CI")) {
     modrinth {
         token.set(System.getenv("MODRINTH_TOKEN"))
         projectId.set("O2HC6NZY")
-        val finalVersion = if (System.getenv("GITHUB_REF_NAME").equals("main")) {
-            "$baseVersion-RELEASE"
-        } else {
-            baseVersion + "-SNAPSHOT+" + System.getenv("SHA_SHORT")
-        }
+        val finalVersion =
+            if (System.getenv("GITHUB_REF_NAME") in listOf("main", "master") || System.getenv("GITHUB_REF_NAME")
+                    .startsWith("v")
+            ) {
+                "$baseVersion-RELEASE"
+            } else {
+                baseVersion + "-SNAPSHOT+" + System.getenv("SHA_SHORT")
+            }
         versionNumber.set(finalVersion)
         versionType.set(System.getenv("MODRINTH_CHANNEL"))
         uploadFile.set(tasks.shadowJar as Any)
         gameVersions.addAll(listOf("1.19", "1.19.1", "1.19.2", "1.19.3"))
         loaders.add("paper")
         loaders.add("bukkit")
-        changelog.set("Automated publish")
+        changelog.set(project.changelog.renderItem(project.changelog.get(baseVersion)))
         dependencies { // A special DSL for creating dependencies
         }
     }
