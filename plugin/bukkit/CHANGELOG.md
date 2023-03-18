@@ -11,7 +11,7 @@
 - Load worlds
 - BStats Support
 ### Changed
-- Change groupId to `net.onelitfeather`
+- Change groupId to `net.onelitefeather`
 
 ### Deprecated
 
