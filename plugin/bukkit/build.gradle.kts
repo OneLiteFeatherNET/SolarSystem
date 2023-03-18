@@ -94,7 +94,7 @@ if (System.getenv().containsKey("CI")) {
                 }
             version.set(finalVersion)
             channel.set(System.getenv("HANGAR_CHANNEL"))
-            changelog.set(project.changelog.renderItem(project.changelog.get(baseVersion)))
+            changelog.set(project.changelog.renderItem(project.changelog.getOrNull(baseVersion) ?: project.changelog.getUnreleased()))
             apiKey.set(System.getenv("HANGAR_SECRET"))
             owner.set("OneLiteFeather")
             slug.set("SolarSystem")
@@ -126,7 +126,7 @@ if (System.getenv().containsKey("CI")) {
         gameVersions.addAll(listOf("1.19", "1.19.1", "1.19.2", "1.19.3"))
         loaders.add("paper")
         loaders.add("bukkit")
-        changelog.set(project.changelog.renderItem(project.changelog.get(baseVersion)))
+        changelog.set(project.changelog.renderItem(project.changelog.getOrNull(baseVersion) ?: project.changelog.getUnreleased()))
         dependencies { // A special DSL for creating dependencies
         }
     }
