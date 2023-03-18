@@ -81,8 +81,8 @@ changelog {
     groups.set(listOf("Added", "Changed", "Deprecated", "Removed", "Fixed", "Security"))
 }
 
-hangarPublish {
-    if (System.getenv().containsKey("CI")) {
+if (System.getenv().containsKey("CI")) {
+    hangarPublish {
         publications.register("SolarSystem") {
             val finalVersion =
                 if (System.getenv("GITHUB_REF_NAME") in listOf("main", "master") || System.getenv("GITHUB_REF_NAME")
