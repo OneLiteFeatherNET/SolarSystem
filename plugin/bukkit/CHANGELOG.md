@@ -9,8 +9,9 @@
 - Delete worlds
 - Unload worlds
 - Load worlds
-- 
+- BStats Support
 ### Changed
+- Change groupId to `net.onelitfeather`
 
 ### Deprecated
 
