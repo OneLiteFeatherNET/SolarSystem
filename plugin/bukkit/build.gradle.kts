@@ -12,7 +12,7 @@ plugins {
     id("org.jetbrains.changelog") version "2.0.0"
 }
 
-group = "dev.themeinerlp"
+group = "net.onelitefeather"
 val baseVersion = "0.0.1"
 
 repositories {
@@ -30,6 +30,7 @@ dependencies {
     implementation("me.lucko:commodore:2.2") {
         isTransitive = false
     }
+    implementation("org.bstats:bstats-bukkit:3.0.0")
 
     bukkitLibrary("com.h2database:h2:2.1.214")
 
@@ -43,6 +44,7 @@ tasks {
     }
     shadowJar {
         archiveFileName.set("${rootProject.name}.${archiveExtension.getOrElse("jar")}")
+        relocate("org.bstats", "net.onelitefeather.bstats")
     }
 }
 
