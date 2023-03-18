@@ -36,6 +36,9 @@ import kotlinx.serialization.hocon.Hocon
 import kotlinx.serialization.hocon.decodeFromConfig
 import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.format.TextColor
+import org.bstats.bukkit.Metrics
+import org.bstats.charts.DrilldownPie
+import org.bukkit.Bukkit
 import org.bukkit.World
 import org.bukkit.plugin.java.JavaPlugin
 import java.nio.file.Files
@@ -50,7 +53,10 @@ class BukkitSolar : JavaPlugin(), SolarSystem<World> {
 
     private var paperCommandManager: PaperCommandManager<BukkitAsteroid>? = null
     private var annotationParser: AnnotationParser<BukkitAsteroid>? = null
+    private lateinit var metrics: Metrics
     override fun onEnable() {
+        this.metrics = Metrics(this, 17988)
+        this.metrics.addCustomChart(DrilldownPie("worlds", this::bStatsWorlds))
         this.localSolarService = BukkitSolarService()
         this.solarSystem = DatabaseSolarSystem(readConfig(), logger, this.localSolarService)
         if (this.solarSystem is DatabaseSolarSystem) {
@@ -61,6 +67,21 @@ class BukkitSolar : JavaPlugin(), SolarSystem<World> {
         registerCommands()
         createHelpSystem()
         server.pluginManager.registerEvents(SolarEntityListener(solarService), this)
+    }
+
+    private fun bStatsWorlds(): MutableMap<String, Map<String, Int>> {
+        val map: MutableMap<String, Map<String, Int>> = HashMap()
+        val worlds = Bukkit.getWorlds().count()
+        val entry= mapOf(worlds.toString() to 1)
+        when(worlds) {
+            0 -> map["0 \uD83D\uDEAB"] = entry
+            in 1..5 -> map["1-5 \uD83D\uDE10"] = entry
+            in 6..10 -> map["6-10 \uD83D\uDE42"] = entry
+            in 11..25 -> map["11-25 \uD83D\uDE0A"] = entry
+            in 26..50 -> map["26-50 \uD83D\uDE00"] = entry
+            else -> map["50+ \uD83D\uDE01"] = entry
+        }
+        return map
     }
 
     override fun onDisable() {

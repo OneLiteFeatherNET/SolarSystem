@@ -12,7 +12,7 @@ plugins {
     id("org.jetbrains.changelog") version "2.0.0"
 }
 
-group = "dev.themeinerlp"
+group = "net.onelitefeather"
 val baseVersion = "0.0.1"
 
 repositories {
@@ -30,6 +30,7 @@ dependencies {
     implementation("me.lucko:commodore:2.2") {
         isTransitive = false
     }
+    implementation("org.bstats:bstats-bukkit:3.0.0")
 
     bukkitLibrary("com.h2database:h2:2.1.214")
 
@@ -43,6 +44,7 @@ tasks {
     }
     shadowJar {
         archiveFileName.set("${rootProject.name}.${archiveExtension.getOrElse("jar")}")
+        relocate("org.bstats", "net.onelitefeather.bstats")
     }
 }
 
@@ -79,8 +81,8 @@ changelog {
     groups.set(listOf("Added", "Changed", "Deprecated", "Removed", "Fixed", "Security"))
 }
 
-hangarPublish {
-    if (System.getenv().containsKey("CI")) {
+if (System.getenv().containsKey("CI")) {
+    hangarPublish {
         publications.register("SolarSystem") {
             val finalVersion =
                 if (System.getenv("GITHUB_REF_NAME") in listOf("main", "master") || System.getenv("GITHUB_REF_NAME")
@@ -92,7 +94,7 @@ hangarPublish {
                 }
             version.set(finalVersion)
             channel.set(System.getenv("HANGAR_CHANNEL"))
-            changelog.set(project.changelog.renderItem(project.changelog.get(baseVersion)))
+            changelog.set(project.changelog.renderItem(project.changelog.getOrNull(baseVersion) ?: project.changelog.getUnreleased()))
             apiKey.set(System.getenv("HANGAR_SECRET"))
             owner.set("OneLiteFeather")
             slug.set("SolarSystem")
@@ -124,7 +126,7 @@ if (System.getenv().containsKey("CI")) {
         gameVersions.addAll(listOf("1.19", "1.19.1", "1.19.2", "1.19.3"))
         loaders.add("paper")
         loaders.add("bukkit")
-        changelog.set(project.changelog.renderItem(project.changelog.get(baseVersion)))
+        changelog.set(project.changelog.renderItem(project.changelog.getOrNull(baseVersion) ?: project.changelog.getUnreleased()))
         dependencies { // A special DSL for creating dependencies
         }
     }

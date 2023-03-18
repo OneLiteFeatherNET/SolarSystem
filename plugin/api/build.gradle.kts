@@ -4,8 +4,8 @@ plugins {
     `java-library`
 }
 
-group = "dev.themeinerlp"
-version = "1.0-SNAPSHOT"
+group = "net.onelitefeather"
+version = "0.0.1"
 
 repositories {
     mavenCentral()
