@@ -1,7 +1,5 @@
 package dev.themeinerlp.solarsystem.api.database
 
-import dev.themeinerlp.solarsystem.api.wrapper.player.GameMode
-import dev.themeinerlp.solarsystem.api.wrapper.world.Difficulty
 import dev.themeinerlp.solarsystem.api.wrapper.world.Environment
 import dev.themeinerlp.solarsystem.api.wrapper.world.WorldType
 import org.jetbrains.exposed.dao.IntEntity
@@ -11,7 +9,6 @@ import org.jetbrains.exposed.dao.id.IntIdTable
 
 object PlanetTables : IntIdTable() {
     val name = text("name").index()
-    val difficulty = enumeration<Difficulty>("difficulty").default(Difficulty.EASY)
     val environment = enumeration<Environment>("environment").default(Environment.NORMAL)
     val worldType = enumeration<WorldType>("worldtype").default(WorldType.NORMAL)
     val seed = long("seed").default(0)
@@ -30,15 +27,12 @@ object PlanetTables : IntIdTable() {
     val allowFlight = bool("allowFlight").default(false)
     val time = long("time").default(0)
     val playerLimit = integer("playerLimit").default(-1)
-    val respawnPlanet = reference("respawnPlanet", PlanetTables).nullable()
-    val gamemode = enumeration<GameMode>("gamemode").default(GameMode.SURVIVAL)
 }
 
 class PlanetEntity(id: EntityID<Int>) : IntEntity(id) {
     companion object : IntEntityClass<PlanetEntity>(PlanetTables)
 
     var name by PlanetTables.name
-    var difficulty by PlanetTables.difficulty
     var environment by PlanetTables.environment
     var worldType by PlanetTables.worldType
     var seed by PlanetTables.seed
@@ -57,6 +51,4 @@ class PlanetEntity(id: EntityID<Int>) : IntEntity(id) {
     var allowFlight by PlanetTables.allowFlight
     var time by PlanetTables.time
     var playerLimit by PlanetTables.playerLimit
-    val respawnPlanet by PlanetEntity optionalReferrersOn PlanetTables.respawnPlanet
-    var gamemode by PlanetTables.gamemode
 }
