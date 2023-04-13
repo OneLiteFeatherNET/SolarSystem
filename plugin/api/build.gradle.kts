@@ -22,6 +22,8 @@ dependencies {
     api("org.jetbrains.kotlinx:kotlinx-serialization-hocon:1.4.1")
     api("com.zaxxer:HikariCP:5.0.1")
     implementation("net.kyori:adventure-api:4.12.0")
+    implementation("net.benwoodworth.knbt:knbt:0.11.3")
+
 
 
 
