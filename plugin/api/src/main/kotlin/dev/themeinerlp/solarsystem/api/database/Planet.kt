@@ -51,4 +51,5 @@ class PlanetEntity(id: EntityID<Int>) : IntEntity(id) {
     var allowFlight by PlanetTables.allowFlight
     var time by PlanetTables.time
     var playerLimit by PlanetTables.playerLimit
+    val flags by FlagEntity referrersOn FlagTables.planet
 }
