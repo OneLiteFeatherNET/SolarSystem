@@ -8,7 +8,7 @@ pluginManagement {
     }
 
 }
-if (file("patched-multiverse").exists()) {
-    includeBuild("patched-multiverse")
+if (file("Multiverse-Core-Patched").exists()) {
+    includeBuild("Multiverse-Core-Patched")
 }
 
