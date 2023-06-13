@@ -1,0 +1,3 @@
+[submodule "Multiverse-Core"]
+	path = Multiverse-Core
+	url = https://github.com/Multiverse/Multiverse-Core.git

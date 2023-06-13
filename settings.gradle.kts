@@ -1,16 +1,14 @@
 
 rootProject.name = "Solarsystem"
-include("api")
-include("plugin:bukkit")
-findProject(":plugin:bukkit")?.name = "bukkit"
+pluginManagement {
+    repositories {
+        mavenCentral()
+        gradlePluginPortal()
+        maven("https://files.minecraftforge.net/maven/")
+    }
 
+}
+if (file("patched-multiverse").exists()) {
+    includeBuild("patched-multiverse")
+}
 
-include("example:java")
-findProject(":example:java")?.name = "java"
-
-include("example:kotlin")
-findProject(":example:kotlin")?.name = "kotlin"
-include("plugin:bukkit")
-findProject(":plugin:bukkit")?.name = "bukkit"
-include("plugin:api")
-findProject(":plugin:api")?.name = "api"
